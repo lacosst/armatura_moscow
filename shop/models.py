@@ -25,6 +25,7 @@ class Product(models.Model):
     name = models.CharField(max_length=200, db_index=True, verbose_name='Наименование')
     slug = models.SlugField(max_length=200, db_index=True, verbose_name='URL')
     image = models.ImageField(upload_to='products/%Y/%m/%d', blank=True, verbose_name='Изображение')
+    diametr = models.PositiveIntegerField()
     mark_steel = models.CharField(max_length=10, verbose_name='Марка стали')
     description = models.TextField(blank=True, verbose_name='Описание')
     meter_weight = models.DecimalField(max_digits=10, decimal_places=2, verbose_name='Вес метра, кг.')

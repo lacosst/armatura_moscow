@@ -22,7 +22,7 @@
                                     </li>
                                 {% else %}
                                     <li>
-                                        <a class="dropdown-item" href="{{ c.slug }}">{{ c.name }}</a>
+                                        <a class="dropdown-item" href="{% url 'shop:category' c.slug %}">{{ c.name }}</a>
                                     </li>
                                 {% endif %}
                             {% endfor %}
@@ -43,9 +43,9 @@
                     <div class="cart mx-3" >
                         {% with total_items=cart|length %}
                             {% if cart|length > 0 %}
-                                Your cart:
+                                Корзина:
                                 <a href="{% url "cart:cart_detail" %}">
-                                    {{ total_items }} item{{ total_items|pluralize }},
+                                    {{ total_items }} позиции на сумму
                                     {{ cart.get_total_price }} руб.
                                 </a>
                             {% else %}
@@ -54,10 +54,6 @@
                         {% endwith %}
                     </div>
                 </div>
-                <form class="d-flex ms-5">
-                    <input class="form-control me-2" type="search" placeholder="Search" aria-label="Search">
-                    <button class="btn btn-outline-success" type="submit">Search</button>
-                </form>
             </div>
         </div>
     </nav>

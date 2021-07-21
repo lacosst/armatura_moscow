@@ -64,7 +64,7 @@ class Cart(object):
         """
         Подсчет всех товаров в корзине.
         """
-        return sum(item['quantity'] for item in self.cart.values())
+        return len(self.cart.values())
 
     def get_total_price(self):
         """

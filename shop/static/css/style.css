@@ -5,3 +5,25 @@ h2 {
 table {
     margin-bottom: 75px!important;
 }
+
+.input-group {
+    width: 45%;
+    display: inline-flex;
+}
+
+.card-header {
+    font-size: 18px;
+    line-height: 30px;
+}
+
+.card-body {
+    padding-top: 0;
+    padding-left: 12px;
+    padding-right: 12px;
+    line-height: 40px;
+}
+
+.card-footer {
+    margin-bottom: -16px;
+    line-height: 30px;
+}

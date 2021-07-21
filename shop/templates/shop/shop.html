@@ -1,6 +1,6 @@
 {% extends 'shop/base.html' %}
 {% block title %}
-    {% if category %}{{ category.name }}{% else %}ARMATURA.MOSCOW{% endif %}
+    {% if category %}{{ category.name }}{% else %}ARMATURA.MOSCOW арматура в Одинцово{% endif %}
 {% endblock %}
 {% block content %}
     {% regroup products by category as category_list %}
@@ -10,6 +10,7 @@
             <thead>
             <tr class="table-primary align-middle">
                 <th scope="col">Продукция</th>
+                <th class="text-center" scope="col">Диаметр</th>
                 <th class="text-center" scope="col">Марка стали</th>
                 <th class="text-center" scope="col">Цена за тонну</th>
                 <th class="text-center" scope="col">Цена за метр</th>
@@ -20,16 +21,17 @@
                 <tbody>
                 <tr>
                     <th scope="row"><a href="{{ p.get_absolute_url }}">{{ p.name }}</a></th>
+                    <td class="text-center">{{ p.diametr }}</td>
                     <td class="text-center">{{ p.mark_steel }}</td>
                     <td class="text-center">{{ p.price_toon | floatformat }}</td>
                     <td class="text-center"><b>{{ p.price }}</b></td>
-                    <td class="text-center mx-auto">
+                    <td class="text-center">
                         <form action="{% url "cart:cart_add" p.id %}" method="post">
                             {% csrf_token %}
                             {{ cart_product_form.update }}
-                            <div class="input-group" style="width: 45%;">
+                            <div class="input-group">
                                 {{ cart_product_form.quantity }}
-                                <button class="btn btn-primary" type="submit">В корзину</button>
+                                <button class="btn btn-primary" type="submit"><i class="bi bi-cart-plus"></i> Добавить</button>
                             </div>
                         </form>
                     </td>
