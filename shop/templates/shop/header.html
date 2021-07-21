@@ -40,11 +40,21 @@
                     </li>
                 </ul>
                 <div id="subheader">
-                    <div class="cart">
-                        Your cart is empty.
+                    <div class="cart mx-3" >
+                        {% with total_items=cart|length %}
+                            {% if cart|length > 0 %}
+                                Your cart:
+                                <a href="{% url "cart:cart_detail" %}">
+                                    {{ total_items }} item{{ total_items|pluralize }},
+                                    {{ cart.get_total_price }} руб.
+                                </a>
+                            {% else %}
+                                Your cart is empty.
+                            {% endif %}
+                        {% endwith %}
                     </div>
                 </div>
-                <form class="d-flex">
+                <form class="d-flex ms-5">
                     <input class="form-control me-2" type="search" placeholder="Search" aria-label="Search">
                     <button class="btn btn-outline-success" type="submit">Search</button>
                 </form>

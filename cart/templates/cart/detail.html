@@ -46,7 +46,7 @@
         </tbody>
     </table>
     <p class="text-right">
-        <a href="{% url "shop:home" %}" class="button light">Continue shopping</a>
-        <a href="#" class="button">Checkout</a>
+        <a href="{% url "shop:home" %}" class="button light">Продолжить покупки</a>
+        <a href="{% url "orders:order_create" %}" class="button">Оформить заказ</a>
     </p>
 {% endblock %}
