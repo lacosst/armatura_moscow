@@ -1,0 +1,95 @@
+<html>
+<body>
+    <!-- <style>
+        .card-header {
+    font-size: 18px;
+    line-height: 30px;
+        }
+        .fw-bold {
+    font-weight: 700 !important;
+        }
+        .py-3 {
+    padding-top: 1rem !important;
+    padding-bottom: 1rem !important;
+}
+.mb-2 {
+    margin-bottom: 0.5rem !important;
+}
+.mb-7 {
+    margin-bottom: 70px;
+}
+.mt-3 {
+    margin-top: 1rem !important;
+}
+.card-header {
+    padding: 0.5rem 1rem;
+    margin-bottom: 0;
+    background-color: rgba(0, 0, 0, 0.03);
+    border-bottom: 1px solid rgba(0, 0, 0, 0.125);
+}
+.row {
+    --bs-gutter-x: 1.5rem;
+    --bs-gutter-y: 0;
+    display: flex !important;
+    flex-wrap: wrap;
+    margin-top: calc(var(--bs-gutter-y) * -1);
+    margin-right: calc(var(--bs-gutter-x) * -.5);
+    margin-left: calc(var(--bs-gutter-x) * -.5);
+}
+.col {
+    flex: 1 0 0%;
+}
+.col-lg-9 {
+    flex: 0 0 auto;
+    width: 75%;
+}
+.text-center {
+    text-align: center !important;
+}
+.card-body {
+    flex: 1 1 auto;
+    padding: 1rem 1rem;
+}
+.border-bottom {
+    border-bottom: 1px solid #dee2e6 !important;
+}
+    </style> -->
+<br>
+<div>
+<h2>Cпасибо за ваш заказ, {{ order.fio }}</h2>
+</div>
+<h3>Номер заказа: {{ order.id }}</h3>
+
+<h2>Вы заказали:</h2>
+<div class="col-lg-9 mx-auto mt-3 mb-7">
+    <div style="display: flex; width: 57%; background-color: rgba(0, 0, 0, 0.03); text-align: center; padding: 1rem; margin: 1rem;border-radius: 5px;" >    
+        <div style="padding: 1rem 5rem;">Наименование</div>
+        <div style="padding: 1rem 7rem;">Кол-во</div>
+        <div style="padding: 1rem 7rem;">Цена</div>
+        <div style="padding: 1rem 7rem;">Сумма</div>    
+    </div>
+    {% for item in cart %}
+    <div style="display: flex; box-shadow: 10px 10px 10px rgba(0, 0, 0, 0.5); width: 57%;">
+        <!-- <div class="col fw-bolder"> -->
+            <div style="padding: 1rem 5rem;">{{ item.product }}</div>
+            <div style="padding: 1rem 5rem;">{{ item.quantity }}</div>
+            <div style="padding: 1rem 5rem;">{{ item.price }}</div>
+            <div style="padding: 1rem 5rem;">{{ item.total_price }}</div>
+        <!-- </div> -->
+    </div>
+    <br>
+    {% endfor %}
+    <div>
+        <div>Итого: <b>{{ cart.get_total_price }}</b></div>
+    </div>
+</div>
+
+
+<h3>
+    Ваши контакты:
+</h3>
+Email: {{ order.email }} <br/>
+Телефон: {{ order.phone_number }}
+
+</body>
+</html>
