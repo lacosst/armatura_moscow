@@ -1,24 +1,66 @@
 {% extends "shop/base.html" %}
 
-{% block title %}Checkout{% endblock %}
+{% block title %}Офромление заказа | ARMATURA.MOSCOW арматура в Одинцово{% endblock %}
 
 {% block content %}
-    <h1>Checkout</h1>
-    <div class="order-info">
-        <h3>Your order</h3>
-        <ul>
-            {% for item in cart %}
-                <li>
-                    {{ item.quantity }}x {{ item.product.name }}
-                    <span>${{ item.total_price }}</span>
-                </li>
-            {% endfor %}
-        </ul>
-        <p>Total: ${{ cart.get_total_price }}</p>
+    <div class="col-lg-9 mx-auto">
+        <h1 class="mb-4">Оформление заказа</h1>
+
+        <div class="row g-5">
+            <div class="col-md-5 col-lg-4 order-md-last">
+                <div class="order-md-last card card-body shadow border-0 ">
+                    <h4 class="d-flex justify-content-between align-items-center mb-3">
+                        <span class="text-primary">Ваша корзина</span>
+                        <span class="badge bg-primary rounded-pill">{% with total_items=cart|length %}
+                            {{ total_items }}{% endwith %}</span>
+                    </h4>
+                    <ul class="list-group mb-3">
+                        {% for item in cart %}
+                            <li class="list-group-item d-flex justify-content-between lh-sm">
+                                <div>
+                                    <h6 class="my-0">{{ item.product.name }}</h6>
+                                    <small class="text-muted">{{ item.price }} x {{ item.quantity }} м.</small>
+                                </div>
+                                <span class="text-muted">{{ item.total_price }} руб.</span>
+                            </li>
+                        {% endfor %}
+                        <li class="list-group-item d-flex justify-content-between">
+                            <span>Всего:</span>
+                            <strong>{{ cart.get_total_price }} руб.</strong>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+
+            <div class="col-md-7 col-lg-8">
+                <div class="card card-body shadow border-0">
+                    <form action="." method="post" class="order-form">
+                        {% csrf_token %}
+                        <label class="form-label">ФИО:</label>
+                        <div class="input-group mb-3">
+                            <div class="input-group-prepend">
+                                <span class="input-group-text"><i class="bi bi-person"></i></span>
+                            </div>
+                            {{ form.fio }}
+                        </div>
+                        <label class="form-label">Номер телефона:</label>
+                        <div class="input-group mb-3">
+                            <div class="input-group-prepend">
+                                <span class="input-group-text"><i class="bi bi-phone"></i></span>
+                            </div>
+                            {{ form.phone_number }}
+                        </div>
+                        <label class="form-label">Эл. адрес:</label>
+                        <div class="input-group mb-4">
+                            <div class="input-group-prepend">
+                                <span class="input-group-text"><i class="bi bi-envelope"></i></span>
+                            </div>
+                            {{ form.email }}
+                        </div>
+                        <input type="submit" value="Офрмить заказ" class="btn btn-success px-5 mx-auto">
+                    </form>
+                </div>
+            </div>
+        </div>
     </div>
-    <form action="." method="post" class="order-form">
-        {{ form.as_p }}
-        <p><input type="submit" value="Place order"></p>
-        {% csrf_token %}
-    </form>
 {% endblock %}

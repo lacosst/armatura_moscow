@@ -1,13 +1,10 @@
-from django.core.validators import RegexValidator
 from django.db import models
 from shop.models import Product
 
 
 class Order(models.Model):
     fio = models.CharField(max_length=150)
-    phone_regex = RegexValidator(regex=r'^\+?7?\d{10}$',
-                                 message="Phone number must be entered in the format: '+999999999'. Up to 11 digits allowed.")
-    phone_number = models.CharField(validators=[phone_regex], max_length=12)  # validators should be a list
+    phone_number = models.CharField(max_length=18)
     email = models.EmailField()
     created = models.DateTimeField(auto_now_add=True)
     updated = models.DateTimeField(auto_now=True)

@@ -135,3 +135,12 @@ MEDIA_URL = '/media/'
 MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
 
 CART_SESSION_ID = 'cart'
+
+RECIPIENTS_EMAIL = ['test@armatura.moscow']   # замените на свою почту
+DEFAULT_FROM_EMAIL = 'test@armatura.moscow'  # замените на свою почту
+EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
+EMAIL_HOST = 'mail.hosting.reg.ru'
+EMAIL_HOST_USER = 'test@armatura.moscow'
+EMAIL_HOST_PASSWORD = 'E9g1G9x2'
+EMAIL_PORT = 25
+EMAIL_USE_TLS = False

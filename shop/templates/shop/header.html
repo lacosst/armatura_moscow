@@ -29,27 +29,27 @@
                         </ul>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link active" aria-current="page" href="#">Home</a>
+                        <a class="nav-link" href="#">Оплата</a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link" href="#">Link</a>
+                        <a class="nav-link" href="#">Самовывоз</a>
                     </li>
 
                     <li class="nav-item">
-                        <a class="nav-link disabled" href="#" tabindex="-1" aria-disabled="true">Disabled</a>
+                        <a class="nav-link" href="#">Контакты</a>
                     </li>
                 </ul>
                 <div id="subheader">
-                    <div class="cart mx-3" >
+                    <div class="cart mx-3 btn btn-primary py-0 px-1" >
                         {% with total_items=cart|length %}
                             {% if cart|length > 0 %}
-                                Корзина:
-                                <a href="{% url "cart:cart_detail" %}">
+                                <i class="bi bi-cart-check"></i>
+                                <a class="text-white text-decoration-none" href="{% url "cart:cart_detail" %}">
                                     {{ total_items }} позиции на сумму
                                     {{ cart.get_total_price }} руб.
                                 </a>
                             {% else %}
-                                Your cart is empty.
+                                <i class="bi bi-cart2"></i> В корзине пусто
                             {% endif %}
                         {% endwith %}
                     </div>

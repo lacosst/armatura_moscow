@@ -3,7 +3,7 @@ from .models import Category, Product
 from cart.forms import CartAddProductForm
 
 
-def main(request, cat_slug=None):
+def shop(request, cat_slug=None):
     category = None
     categories = Category.objects.all()
     products = Product.objects.filter(available=True)
@@ -22,9 +22,11 @@ def product_detail(request, product_slug):
     product = get_object_or_404(Product, slug=product_slug,  available=True)
 
     cart_product_form = CartAddProductForm()
+    categories = Category.objects.all()
     return render(request,
                   'shop/detail.html',
                   {'product': product,
+                   'categories': categories,
                    'cart_product_form': cart_product_form})
 
 

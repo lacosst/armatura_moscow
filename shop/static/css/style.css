@@ -1,4 +1,4 @@
-h2 {
+h1, h2 {
     margin-bottom: 25px;
 }
 
@@ -6,8 +6,16 @@ table {
     margin-bottom: 75px!important;
 }
 
-.input-group {
-    width: 45%;
+.mb-7 {
+    margin-bottom: 70px;
+}
+
+.text-accent {
+    color: #4e54c8 !important;
+}
+
+.qt {
+    width: 90%;
     display: inline-flex;
 }
 
@@ -16,7 +24,11 @@ table {
     line-height: 30px;
 }
 
-.card-body {
+.card {
+    border-radius: 13px;
+}
+
+.cart {
     padding-top: 0;
     padding-left: 12px;
     padding-right: 12px;

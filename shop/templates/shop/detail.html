@@ -4,18 +4,90 @@
     {{ product.name }} {{ product.mark_steel }} купить на складе в Одинцово
 {% endblock %}
 {% block content %}
-    <div class="product-detail">
-        <img src="{% if product.image %}{{ product.image.url }}{% else %}{% static "img/no_image.png" %}{% endif %}">
-        <h1>{{ product.name }}</h1>
-        <h2><a href="{{ product.category.get_absolute_url }}">{{ product.category }}</a></h2>
-        <p class="price">${{ product.price }}</p>
-        {{ product.description|linebreaks }}
-        <p class="price">${{ product.price }}</p>
-        <form action="{% url "cart:cart_add" product.id %}" method="post">
-            {{ cart_product_form }}
-            {% csrf_token %}
-            <input type="submit" value="Add to cart">
-        </form>
-    {{ product.id }}
+    <div class="col-lg-9 mx-auto mt-3 mb-7">
+        <h1>{{ product.name }} {{ product.mark_steel }}</h1>
+        <div class="card shadow border-0">
+            <div class="card-header fs-6" style="font-size: 10px;">
+                <nav style="--bs-breadcrumb-divider: url(&#34;data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='8' height='8'%3E%3Cpath d='M2.5 0L1 1.5 3.5 4 1 6.5 2.5 8l4-4-4-4z' fill='currentColor'/%3E%3C/svg%3E&#34;);"
+                     aria-label="breadcrumb">
+                    <ol class="breadcrumb m-0">
+                        <li class="breadcrumb-item"><a class="text-decoration-none" href="{% url 'shop:home' %}">Продукция</a>
+                        </li>
+                        <li class="breadcrumb-item active"><a class="text-decoration-none"
+                                                              href="{{ product.category.get_absolute_url }}">{{ product.category }}</a>
+                        </li>
+                        <li class="breadcrumb-item active" aria-current="page">{{ product.name }}</li>
+                    </ol>
+                </nav>
+            </div>
+            <div class="px-lg-13">
+                <div class="row">
+                    <div class="col-lg-7 p-lg-4">
+                        <div class="product-gallery">
+                            <div class="product-gallery-preview order-sm-2">
+                                <div class="product-gallery-preview-item active" id="first">
+                                    <img class="image-zoom" alt="{{ product.name }} {{ product.mark_steel }}"
+                                         data-zoom="
+
+                                                 {% if product.image %}{{ product.image.url }}{% else %}{% static "img/no_image.png" %}{% endif %}"
+                                         src="
+
+                                                 {% if product.image %}{{ product.image.url }}{% else %}{% static "img/no_image.png" %}{% endif %}">
+                                    <div class="image-zoom-pane"></div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-lg-5 p-lg-4">
+                        <div class="product-details ms-auto pb-3 pe-4">
+
+                            <div class="card mt-4">
+                                <div class="card-header"><p class="h4">Харастеристики</p></div>
+                                <ul class="list-group list-group-flush">
+                                    <li class="list-group-item">
+                                        <div class="fs-sm">
+                                            <span class="text-heading fw-medium me-1">Диаметр:</span>
+                                            <span class="text-muted">{{ product.diametr }} мм.</span>
+                                        </div>
+                                    </li>
+                                    <li class="list-group-item">
+                                        <div class="fs-sm">
+                                            <span class="text-heading fw-medium me-1">Марка стали:</span>
+                                            <span class="text-muted">{{ product.mark_steel }}</span></div>
+                                    </li>
+                                    <li class="list-group-item">
+                                        <div class="fs-sm">
+                                            <span class="text-heading fw-medium me-1">Вес метра:</span>
+                                            <span class="text-muted">{{ product.meter_weight }} кг.</span></div>
+                                    </li>
+                                </ul>
+                            </div>
+
+
+                            <div class="mt-5">
+                                Цена за метр:<span class="h3 fw-normal text-accent me-1"> {{ product.price }}<small> руб.</small></span>
+                                <form action="{% url "cart:cart_add" product.id %}" method="post">
+                                    {% csrf_token %}
+                                    {{ cart_product_form.update }}
+                                    <div class="input-group">
+                                        {{ cart_product_form.quantity }}
+                                        <button class="btn btn-primary" type="submit"><i class="bi bi-cart-plus"></i>
+                                            Добавить
+                                        </button>
+                                    </div>
+                                </form>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            <div class="row">
+                <h3>Описание</h3>
+                {{ product.description|linebreaks }}
+            </div>
+            </div>
+        </div>
     </div>
+
+
+
 {% endblock %}

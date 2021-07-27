@@ -7,8 +7,8 @@ from .views import *
 app_name = 'shop'
 
 urlpatterns = [
-    path('', main, name='home'),
-    path('<slug:cat_slug>', main, name='category'),
+    path('', shop, name='home'),
+    path('<slug:cat_slug>', shop, name='category'),
     path('product/<slug:product_slug>', product_detail, name='product'),
 ]
 
