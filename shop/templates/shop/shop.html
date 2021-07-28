@@ -3,39 +3,51 @@
     {% if category %}{{ category.name }}{% else %}ARMATURA.MOSCOW арматура в Одинцово{% endif %}
 {% endblock %}
 {% block content %}
+    {% if messages %}
+        <div class="col-lg-9 mx-auto">
+            {% for message in messages %}
+                <div{% if message.tags %}
+                    class="alert alert-{{ message.tags }} mx-auto text-center"{% endif %}>{{ message }}</div>
+            {% endfor %}
+        </div>
+    {% endif %}
     {% regroup products by category as category_list %}
     {% for category in category_list %}
         <div class="col-lg-9 mx-auto mt-3 mb-7">
-        <h2>{{ category.grouper }}</h2>
-        <div class="cart card card-body shadow border-0 pb-0">
-            <div class="row card-header mb-2 fw-bold py-3">
-                <div class="col">Продукция</div>
-                <div class="col text-center">Диаметр</div>
-                <div class="col text-center">Марка стали</div>
-                <div class="col text-center">Цена за тонну</div>
-                <div class="col text-center">Цена за метр</div>
-                <div class="col-2 text-center">Кол-во</div>
-            </div>
-            {% for p in category.list %}
-                <div class="row card-body border-bottom ">
-                    <div class="col fw-bolder"><a class="text-decoration-none"
-                                                  href="{{ p.get_absolute_url }}">{{ p.name }}</a></div>
-                    <div class="col text-center">{{ p.diametr }}</div>
-                    <div class="col text-center">{{ p.mark_steel }}</div>
-                    <div class="col text-center">{{ p.price_toon | floatformat }}</div>
-                    <div class="col text-center"><b>{{ p.price }}</b></div>
-                    <div class="col-2 text-center m-0 p-0">
-                        <form action="{% url "cart:cart_add" p.id %}" method="post">
-                            {% csrf_token %}
-                            {{ cart_product_form.update }}
-                            <div class="input-group qt">
-                                {{ cart_product_form.quantity }}
-                                <button class="btn btn-primary" type="submit"><i class="bi bi-cart-plus"></i>                                </button>
-                            </div>
-                        </form>
-                    </div>
+            <h2>{{ category.grouper }}</h2>
+            <div class="cart card card-body shadow border-0 pb-0">
+                <div class="row card-header mb-2 fw-bold py-3">
+                    <div class="col">Продукция</div>
+                    <div class="col text-center">Диаметр</div>
+                    <div class="col text-center">Марка стали</div>
+                    <div class="col text-center">Цена за тонну</div>
+                    <div class="col text-center">Цена за метр</div>
+                    <div class="col-2 text-center">Кол-во</div>
                 </div>
-            {% endfor %}
-        </div></div>
+                {% for p in category.list %}
+                    <div class="row card-body border-bottom ">
+                        <div class="col fw-bolder"><a class="text-decoration-none"
+                                                      href="{{ p.get_absolute_url }}">{{ p.name }}</a></div>
+                        <div class="col text-center">{{ p.diametr }}</div>
+                        <div class="col text-center">{{ p.mark_steel }}</div>
+                        <div class="col text-center">{{ p.price_toon | floatformat }}</div>
+                        <div class="col text-center"><b>{{ p.price }}</b></div>
+                        <div class="col-2 text-center">
+                            <form action="{% url "cart:cart_add" p.id %}" method="post">
+                                {% csrf_token %}
+                                {{ cart_product_form.update }}
+                                <div class="input-group d-flex flex-nowrap">
+                                    <div class="form-floating">
+                                        {{ cart_product_form.quantity }}
+                                        <label for="id_quantity">Метров</label></div>
+                                    <button class="btn btn-primary" type="submit"><i class="bi bi-cart-plus"></i>
+                                    </button>
+                                </div>
+                            </form>
+                        </div>
+                    </div>
+                {% endfor %}
+            </div>
+        </div>
     {% endfor %}
 {% endblock %}

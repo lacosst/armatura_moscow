@@ -4,6 +4,13 @@
     {{ product.name }} {{ product.mark_steel }} купить на складе в Одинцово
 {% endblock %}
 {% block content %}
+        {% if messages %}
+        <div class="col-lg-9 mx-auto">
+            {% for message in messages %}
+                <div{% if message.tags %} class="alert alert-{{ message.tags }} mx-auto text-center"{% endif %}>{{ message }}</div>
+            {% endfor %}
+        </div>
+    {% endif %}
     <div class="col-lg-9 mx-auto mt-3 mb-7">
         <h1>{{ product.name }} {{ product.mark_steel }}</h1>
         <div class="card shadow border-0">
@@ -66,16 +73,17 @@
 
                             <div class="mt-5">
                                 Цена за метр:<span class="h3 fw-normal text-accent me-1"> {{ product.price }}<small> руб.</small></span>
-                                <form action="{% url "cart:cart_add" product.id %}" method="post">
-                                    {% csrf_token %}
-                                    {{ cart_product_form.update }}
-                                    <div class="input-group">
-                                        {{ cart_product_form.quantity }}
-                                        <button class="btn btn-primary" type="submit"><i class="bi bi-cart-plus"></i>
-                                            Добавить
-                                        </button>
-                                    </div>
-                                </form>
+                            <form action="{% url "cart:cart_add" product.id %}" method="post">
+                                {% csrf_token %}
+                                {{ cart_product_form.update }}
+                                <div class="input-group qt">
+                                    <div class="form-floating">
+                                    {{ cart_product_form.quantity }}
+                                        <label for="id_quantity">Метров</label></div>
+                                    <button class="btn btn-primary" type="submit"><i class="bi bi-cart-plus"></i>
+                                    </button>
+                                </div>
+                            </form>
                             </div>
                         </div>
                     </div>

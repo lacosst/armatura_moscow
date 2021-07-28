@@ -17,3 +17,5 @@ class ProductAdmin(admin.ModelAdmin):
 admin.site.register(Category, CategoryAdmin)
 admin.site.register(Product, ProductAdmin)
 
+admin.site.site_title = 'ARMATURA.MOSCOW'
+admin.site.site_header = 'ARMATURA.MOSCOW'

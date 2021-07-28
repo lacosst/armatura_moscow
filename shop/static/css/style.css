@@ -26,6 +26,7 @@ table {
 
 .card {
     border-radius: 13px;
+    white-space: nowrap;
 }
 
 .cart {

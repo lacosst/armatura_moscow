@@ -3,6 +3,7 @@ from django.views.decorators.http import require_POST
 from shop.models import Product, Category
 from .cart import Cart
 from .forms import CartAddProductForm
+from django.contrib import messages
 
 
 @require_POST
@@ -15,7 +16,10 @@ def cart_add(request, product_id):
         cart.add(product=product,
                  quantity=cd['quantity'],
                  update_quantity=cd['update'])
-    return redirect('shop:home')
+
+    messages.add_message(request, messages.SUCCESS, f"{product} х {cd['quantity']} метров добавлено в корзину")
+    print(messages)
+    return redirect(request.META['HTTP_REFERER'])
 
 
 def cart_remove(request, product_id):
