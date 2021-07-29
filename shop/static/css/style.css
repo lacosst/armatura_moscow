@@ -40,3 +40,14 @@ table {
     margin-bottom: -16px;
     line-height: 30px;
 }
+
+.navbar_main {
+	position: fixed !important;
+	top: 0px !important;
+	width: 100% !important;
+	z-index: 900 !important;
+}
+
+.content_site {
+	padding-top: 1rem;
+}

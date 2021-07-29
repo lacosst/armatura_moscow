@@ -1,7 +1,7 @@
 import decimal
-
 from django.db import models
 from django.urls import reverse
+from shop.utils import from_cyrillic_to_eng
 
 
 class Category(models.Model):
@@ -9,7 +9,7 @@ class Category(models.Model):
     slug = models.SlugField(max_length=200, db_index=True, unique=True)
 
     class Meta:
-        # ordering = ('name',)
+        ordering = ('name',)
         verbose_name = 'Категория'
         verbose_name_plural = 'Категории'
 
@@ -21,7 +21,7 @@ class Category(models.Model):
 
 
 class Product(models.Model):
-    category = models.ForeignKey(Category, related_name='products', on_delete=models.CASCADE, verbose_name='Категория')
+    category = models.ForeignKey(Category, related_name='products', on_delete=models.PROTECT, verbose_name='Категория')
     name = models.CharField(max_length=200, db_index=True, verbose_name='Наименование')
     slug = models.SlugField(max_length=200, db_index=True, verbose_name='URL')
     image = models.ImageField(upload_to='products/%Y/%m/%d', blank=True, verbose_name='Изображение')
@@ -54,7 +54,10 @@ class Product(models.Model):
 
     def save(self, *args, **kwargs):
         self.price = self.get_price
+        if not self.slug:
+            self.slug = from_cyrillic_to_eng(str(self.name)+'_'+str(self.mark_steel))
         super(Product, self).save(*args, **kwargs)
+
 
     def get_absolute_url(self):
         # return reverse('shop:product_detail', args=[self.id, self.slug])

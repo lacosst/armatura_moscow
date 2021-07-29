@@ -4,10 +4,11 @@
     {{ product.name }} {{ product.mark_steel }} купить на складе в Одинцово
 {% endblock %}
 {% block content %}
-        {% if messages %}
+    {% if messages %}
         <div class="col-lg-9 mx-auto">
             {% for message in messages %}
-                <div{% if message.tags %} class="alert alert-{{ message.tags }} mx-auto text-center"{% endif %}>{{ message }}</div>
+                <div{% if message.tags %} class="alert alert-{{ message.tags }} mx-auto text-center"{% endif %}><i
+                        class="bi bi-check-circle-fill"></i> {{ message }}</div>
             {% endfor %}
         </div>
     {% endif %}
@@ -36,8 +37,10 @@
                                     <img class="image-zoom" alt="{{ product.name }} {{ product.mark_steel }}"
                                          data-zoom="
 
+
                                                  {% if product.image %}{{ product.image.url }}{% else %}{% static "img/no_image.png" %}{% endif %}"
                                          src="
+
 
                                                  {% if product.image %}{{ product.image.url }}{% else %}{% static "img/no_image.png" %}{% endif %}">
                                     <div class="image-zoom-pane"></div>
@@ -65,33 +68,38 @@
                                     <li class="list-group-item">
                                         <div class="fs-sm">
                                             <span class="text-heading fw-medium me-1">Вес метра:</span>
-                                            <span class="text-muted">{{ product.meter_weight }} кг.</span></div>
+                                            <span class="text-muted">{{ product.meter_weight }} кг.</span>
+                                        </div>
                                     </li>
                                 </ul>
                             </div>
-
-
                             <div class="mt-5">
-                                Цена за метр:<span class="h3 fw-normal text-accent me-1"> {{ product.price }}<small> руб.</small></span>
-                            <form action="{% url "cart:cart_add" product.id %}" method="post">
-                                {% csrf_token %}
-                                {{ cart_product_form.update }}
-                                <div class="input-group qt">
-                                    <div class="form-floating">
-                                    {{ cart_product_form.quantity }}
-                                        <label for="id_quantity">Метров</label></div>
-                                    <button class="btn btn-primary" type="submit"><i class="bi bi-cart-plus"></i>
-                                    </button>
-                                </div>
-                            </form>
+                                <p class="fs-3">Цена за метр:<span class="h3 fw-normal text-accent me-1"> {{ product.price }}<small> руб.</small></span></p>
+                                <form action="{% url "cart:cart_add" product.id %}" method="post">
+                                    {% csrf_token %}
+                                    {{ cart_product_form.update }}
+                                    <div class="input-group">
+                                        <div class="form-floating">
+                                            {{ cart_product_form.quantity }}
+                                            <label for="id_quantity">Метров</label></div>
+                                        <button class="btn btn-primary" type="submit"><i class="bi bi-cart-plus"></i>
+                                        </button>
+                                    </div>
+                                </form>
                             </div>
                         </div>
                     </div>
                 </div>
-            <div class="row">
-                <h3>Описание</h3>
-                {{ product.description|linebreaks }}
-            </div>
+            {% if product.description %}
+                <div class="row">
+                    <div class="col-lg p-lg-4 mx-5">
+                        <h3 class="border-bottom pb-2">Описание</h3>
+                        {% autoescape off %}
+                        {{ product.description|linebreaks }}
+                        {% endautoescape %}
+                    </div>
+                </div>
+            {% endif %}
             </div>
         </div>
     </div>
