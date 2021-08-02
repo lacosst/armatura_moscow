@@ -1,3 +1,4 @@
+from django.http import JsonResponse, response, HttpResponse
 from django.shortcuts import render, redirect, get_object_or_404
 from django.views.decorators.http import require_POST
 from shop.models import Product, Category
@@ -9,17 +10,30 @@ from django.contrib import messages
 @require_POST
 def cart_add(request, product_id):
     cart = Cart(request)
+    print('### cart ###', cart.cart)
     product = get_object_or_404(Product, id=product_id)
-    form = CartAddProductForm(request.POST)
-    if form.is_valid():
-        cd = form.cleaned_data
-        cart.add(product=product,
-                 quantity=cd['quantity'],
-                 update_quantity=cd['update'])
+    print('### product ###', product)
+    if request.method == "POST" and request.is_ajax():
+        form = CartAddProductForm(request.POST)
+        print(1)
+        if form.is_valid():
+            cd = form.cleaned_data
+            cart.add(product=product,
+                     quantity=cd['quantity'],
+                     update_quantity=cd['update'])
+            msg = messages.add_message(request, messages.SUCCESS, f"{product} х {cd['quantity']} метров добавлено в корзину")
+            print('### cart ###', cart.cart)
+            data = {'quantity': cd['quantity'],
+                    'msg': msg,
+                    'total_pice_cart': cart.get_total_price(),
+                    'count_item_cart': cart.__len__()}
+            print(cart.get_total_price())
+            return JsonResponse(data, status=200, safe=False)
+        else:
+            errors = form.errors.as_json()
+            return JsonResponse({"errors": errors}, status=400)
 
-    messages.add_message(request, messages.SUCCESS, f"{product} х {cd['quantity']} метров добавлено в корзину")
-    print(messages)
-    return redirect(request.META['HTTP_REFERER'])
+    return redirect(request.META.get('HTTP_REFERER'))
 
 
 def cart_remove(request, product_id):

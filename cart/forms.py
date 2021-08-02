@@ -9,6 +9,7 @@ class CartAddProductForm(forms.Form):
     update = forms.BooleanField(required=False, initial=False, widget=forms.HiddenInput)
     quantity = forms.IntegerField(label='', widget=forms.TextInput(attrs={'type': 'number',
                                                                           'class': 'form-control',
+                                                                          'style': 'height: 50px;',
                                                                           'placeholder': 'метров',
                                                                           'min': '1',
                                                                           'step': '1',
