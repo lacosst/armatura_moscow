@@ -10,9 +10,7 @@ from django.contrib import messages
 @require_POST
 def cart_add(request, product_id):
     cart = Cart(request)
-    print('### cart ###', cart.cart)
     product = get_object_or_404(Product, id=product_id)
-    print('### product ###', product)
     if request.method == "POST" and request.is_ajax():
         form = CartAddProductForm(request.POST)
         print(1)
@@ -21,13 +19,12 @@ def cart_add(request, product_id):
             cart.add(product=product,
                      quantity=cd['quantity'],
                      update_quantity=cd['update'])
-            msg = messages.add_message(request, messages.SUCCESS, f"{product} х {cd['quantity']} метров добавлено в корзину")
-            print('### cart ###', cart.cart)
+            # msg = messages.add_message(request, messages.SUCCESS, f"{product} х {cd['quantity']} метров добавлено в корзину ↓")
+            msg = f"{product} х {cd['quantity']} метров добавлено в корзину ↓"
             data = {'quantity': cd['quantity'],
                     'msg': msg,
                     'total_pice_cart': cart.get_total_price(),
                     'count_item_cart': cart.__len__()}
-            print(cart.get_total_price())
             return JsonResponse(data, status=200, safe=False)
         else:
             errors = form.errors.as_json()
@@ -43,7 +40,37 @@ def cart_remove(request, product_id):
     return redirect('cart:cart_detail')
 
 
+def cart_update(request, product_id):
+    cart = Cart(request)
+    product = get_object_or_404(Product, id=product_id)
+
+    print(request.POST.get('qwt'))
+    if request.is_ajax():
+        form = CartAddProductForm(request.POST)
+
+        cart.add(product=product,
+                 quantity=int(request.POST.get('qwt')),
+                 update_quantity=form['update'])
+
+        data = {'quantity': int(request.POST.get('qwt')),
+                'total_pice_cart': cart.get_total_price(),
+                'count_item_cart': cart.__len__()}
+        # print(data)
+        # cart.save()
+
+        return JsonResponse(data, status=200, safe=False)
+    else:
+        # errors = form.errors.as_json()
+        return JsonResponse(None, status=400, safe=False)
+
+    return redirect(request.META.get('HTTP_REFERER'))
+
+    # print('#####', request.POST.get('qwt'))
+    # return redirect('cart:cart_detail')
+
+
 def cart_detail(request):
     categories = Category.objects.all()
     cart = Cart(request)
-    return render(request, 'cart/detail.html', {'cart': cart, 'categories': categories})
+    cart_product_form = CartAddProductForm()
+    return render(request, 'cart/detail.html', {'cart': cart, 'categories': categories, 'cart_product_form': cart_product_form})

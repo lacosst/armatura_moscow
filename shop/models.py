@@ -7,9 +7,10 @@ from shop.utils import from_cyrillic_to_eng
 class Category(models.Model):
     name = models.CharField(max_length=200, db_index=True, verbose_name='Категория')
     slug = models.SlugField(max_length=200, db_index=True, unique=True)
+    order = models.IntegerField(default=0)
 
     class Meta:
-        ordering = ('name',)
+        ordering = ['order']
         verbose_name = 'Категория'
         verbose_name_plural = 'Категории'
 
@@ -25,10 +26,11 @@ class Product(models.Model):
     name = models.CharField(max_length=200, db_index=True, verbose_name='Наименование')
     slug = models.SlugField(max_length=200, db_index=True, verbose_name='URL')
     image = models.ImageField(upload_to='products/%Y/%m/%d', blank=True, verbose_name='Изображение')
-    diametr = models.PositiveIntegerField(verbose_name='Диаметр')
+    diametr = models.CharField(verbose_name='Диаметр', max_length=5)
     mark_steel = models.CharField(max_length=10, verbose_name='Марка стали')
+    dlina = models.CharField(max_length=10, verbose_name='Длина', blank=True)
     description = models.TextField(blank=True, verbose_name='Описание')
-    meter_weight = models.DecimalField(max_digits=10, decimal_places=2, verbose_name='Вес метра, кг.')
+    meter_weight = models.DecimalField(max_digits=10, decimal_places=2, verbose_name='Вес метра, кг.', default=0)
     price_toon = models.DecimalField(max_digits=10, decimal_places=2, verbose_name='Цена за тонну')
     price = models.DecimalField(max_digits=10, decimal_places=2, blank=True, verbose_name='Цена')
     stock = models.IntegerField(verbose_name='Запасы', default=0)
@@ -40,7 +42,7 @@ class Product(models.Model):
         verbose_name = 'Товар'
         verbose_name_plural = 'Товары'
         ordering = ['id']
-        index_together = (('id', 'slug'),)
+        # index_together = (('id', 'slug'),)
 
     def __str__(self):
         return self.name
@@ -48,16 +50,15 @@ class Product(models.Model):
     @property
     def get_price(self):
         a = self.price_toon / 1000  # получаем цену за 1 кг
-        b = self.meter_weight * a  # получаемм ценну зrа 1 м
-        c = int(b) + (int(b) * 0.1)  # делаем наценку
-        return decimal.Decimal(c)
+        b = float(self.meter_weight) * float(a)  # получаемм ценну зrа 1 м
+        c = int(b) + (int(b) * 0.2)  # делаем наценку
+        return c
 
     def save(self, *args, **kwargs):
         self.price = self.get_price
         if not self.slug:
-            self.slug = from_cyrillic_to_eng(str(self.name)+'_'+str(self.mark_steel))
+            self.slug = from_cyrillic_to_eng(str(self.name)+'_'+str(self.mark_steel)+'_'+str(self.dlina))
         super(Product, self).save(*args, **kwargs)
-
 
     def get_absolute_url(self):
         # return reverse('shop:product_detail', args=[self.id, self.slug])

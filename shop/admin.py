@@ -8,9 +8,10 @@ class CategoryAdmin(admin.ModelAdmin):
 
 
 class ProductAdmin(admin.ModelAdmin):
-    list_display = ['category', 'name', 'slug', '' 'price_toon', 'price', 'stock', 'available', 'updated']
+    list_display = ['category', 'name', 'meter_weight', 'price_toon', 'price',  'available', 'updated']
     list_filter = ['available', 'created', 'updated', 'category']
-    list_editable = ['price_toon', 'stock', 'available']
+    list_editable = ['meter_weight', 'price_toon', 'available']
+    list_display_links = ['category', 'name']
     prepopulated_fields = {'slug': ('name', 'mark_steel')}
 
 

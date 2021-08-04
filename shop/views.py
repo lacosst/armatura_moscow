@@ -6,7 +6,7 @@ from cart.forms import CartAddProductForm
 def shop(request, cat_slug=None):
     category = None
     categories = Category.objects.all()
-    products = Product.objects.filter(available=True)
+    products = Product.objects.filter(available=True).order_by('category__order',)
     cart_product_form = CartAddProductForm()
     if cat_slug:
         category = get_object_or_404(Category, slug=cat_slug)

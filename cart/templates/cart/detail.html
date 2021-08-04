@@ -7,49 +7,111 @@
 
     <div class="col-lg-9 mx-auto">
         {% if cart %}
-    <h1 class="mb-4">Ваша корзина</h1>
-        <div class="cart card card-body shadow border-0">
-            <div class="row card-header mb-2 fs-6 fw-bold py-3">
-                <div class="col-3">Наименование</div>
-                <div class="col text-center">Количество, м.</div>
-                <div class="col text-center">Цена за метр, руб.</div>
-                <div class="col text-center">Сумма, руб.</div>
-                <div class="col text-center">Удалить</div>
-            </div>
-            {% for item in cart %}
-                {% with product=item.product %}
-                    <div class="row card-body border-bottom ">
-                        <div class="col-3 fw-bolder" ><a class="text-decoration-none" href="{% url 'shop:product' product.slug %}">{{ product.name }}</a></div>
-                        <div class="col text-center">{{ item.quantity }}</div>
-                        <div class="col text-center">{{ item.price }}</div>
-                        <div class="col text-center">{{ item.total_price }}</div>
-                        <div class="col text-center fs-3"><a href="{% url "cart:cart_remove" product.id %}"><i class="bi bi-cart-x"></i></a>
+            <h1 class="mb-4">Ваша корзина</h1>
+            <div class="cart card card-body shadow border-0">
+                <div class="row card-header mb-2 fs-6 fw-bold py-3">
+                    <div class="col-3">Наименование</div>
+                    <div class="col text-center">Количество, м.</div>
+                    <div class="col text-center">Цена за метр, руб.</div>
+                    <div class="col text-center">Сумма, руб.</div>
+                    <div class="col text-center">Удалить</div>
+                </div>
+                {% for item in cart %}
+                    {% with product=item.product %}
+                        <div class="row card-body border-bottom ">
+                            <div class="col-3 fw-bolder"><a class="text-decoration-none"
+                                                            href="{% url 'shop:product' product.slug %}">{{ product.name }}</a>
+                            </div>
+                            <div class="col text-center">
+                                <form class="cart_update" method="post"
+                                      action="{% url 'cart:cart_update' product.id %}">
+                                    {% csrf_token %}
+                                    <div class="input-group mb-3">
+                                        <button type="submit" class="input-group-text btn btn-primary cart_minus">
+                                            <b>-</b></button>
+                                        <input type="number" class="form-control text-center in" aria-label="Метров"
+                                               name="qwt" value="{{ item.quantity }}">
+                                        <button type="submit" class="cart_plus input-group-text btn btn-primary">
+                                            <b>+</b></button>
+                                    </div>
+                                </form>
+                            </div>
+                            <div class="col text-center">{{ item.price }}</div>
+                            <div class="col text-center">{{ item.total_price }}</div>
+                            <div class="col text-center fs-3"><a href="{% url "cart:cart_remove" product.id %}"><i
+                                    class="bi bi-cart-x"></i></a>
+                            </div>
                         </div>
-                    </div>
-                {% endwith %}
-            {% endfor %}
-            <div class="row card-footer">
-                <div class="col-5 text-end">Итого:</div>
-                <div class="col-5">{{ cart.get_total_price }} руб.</div>
-            </div>
+                    {% endwith %}
+                {% endfor %}
+                <div class="row card-footer">
+                    <div class="col-5 text-end">Итого:</div>
+                    <div class="col-5">{{ cart.get_total_price }} руб.</div>
+                </div>
 
-        </div>
-        <div class="row mt-4">
-            <p class="">
-                <a href="{% url "shop:home" %}" class="btn btn-primary">Продолжить покупки</a>
-                <a href="{% url "orders:order_create" %}" class="btn btn-success">Оформить заказ</a>
-            </p>
-        </div>
-    {% else %}
+            </div>
+            <div class="row mt-4">
+                <p class="">
+                    <a href="{% url "shop:home" %}" class="btn btn-primary">Продолжить покупки</a>
+                    <a href="{% url "orders:order_create" %}" class="btn btn-success">Оформить заказ</a>
+                </p>
+            </div>
+        {% else %}
             <h2 class="m5-4 ">Ваша корзина пуста &#128549;</h2>
             <div class="alert alert-warning pb-1" role="alert" style="width: fit-content;">
                 <p>В вашей корзине больше нет товаров, для добавления товара перейдите в магазин</p>
             </div>
             <div class="row mt-4">
-            <p class="">
-                <a href="{% url "shop:home" %}" class="btn btn-primary">Перейти в магазин</a>
-            </p>
-        </div>
-    {% endif %}
+                <p class="">
+                    <a href="{% url "shop:home" %}" class="btn btn-primary">Перейти в магазин</a>
+                </p>
+            </div>
+        {% endif %}
     </div>
+{% endblock %}
+{% block javascript %}
+    <script>
+        $(document).ready(function () {
+            // отслеживаем событие отправки формы
+            $('.cart_update').submit(function () {
+                // создаем AJAX-вызов
+                $.ajax({
+                    data: $(this).serialize(), // получаем данные формы
+                    type: $(this).attr('method'), // GET или POST
+                    url: $(this).attr('action'),
+                    // если успешно, то
+                    success: function (response) {
+                        //alert("Спасибо, что обратились к нам ");
+                        workMessenger()
+                        console.log(response)
+                        console.log(this.data + '-----------------------------------------' + this.url)
+                        console.log('quantity: ' + response.quantity)
+                        // console.log()
+                        console.log('msg: ' + response.msg)
+                        console.log('total_pice_cart: ' + response.total_pice_cart)
+                        console.log('count_item_cart: ' + response.count_item_cart)
+                    },
+                    // если ошибка, то
+                    error: function (response) {
+                        // предупредим об ошибке
+                        alert(response.responseJSON);
+                        console.log(response.responseJSON)
+                    }
+                });
+                return false;
+            });
+
+            {#$('.cart_plus').on('click', function () {#}
+            {#    $.ajax({#}
+            {#        url: $(this).attr('action'),#}
+            {#        type: 'post',#}
+            {#        data: $(this).serialize(),#}
+            {#        success: function (response) {#}
+            {#            console.log(response.rs)#}
+            {#        }#}
+            {#    });#}
+            {# });#}
+            {#return false;#}
+        });
+    </script>
 {% endblock %}

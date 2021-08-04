@@ -51,3 +51,21 @@ table {
 .content_site {
 	padding-top: 1rem;
 }
+
+.alert {
+	position: fixed !important;
+	top: 70px;
+	right: 2%;
+	z-index: 500;
+}
+
+.in::-webkit-outer-spin-button,
+.in::-webkit-inner-spin-button {
+  -webkit-appearance: none;
+  margin: 0;
+}
+
+/* Firefox */
+.in {
+  -moz-appearance:textfield;
+}

@@ -13,9 +13,13 @@
 <div class="container mt-5 content_site">
     {% block content %}{% endblock %}
 </div>
-{% block javascript %}{% endblock %}
 
-   <!-- <script src= {% static 'js/js.js' %}></script> -->
-    <script src= {% static 'js/bootstrap/bootstrap.js' %}></script>
+
+
+<script src= {% static 'js/bootstrap/bootstrap.js' %}></script>
+<script src= {% static 'js/jquery3.6.0.min.js' %}></script>
+{#<script src= {% static 'js/js.js' %}></script>#}
+<script src= {% static 'js/action.js' %}></script>
+{% block javascript %}{% endblock %}
 </body>
 </html>

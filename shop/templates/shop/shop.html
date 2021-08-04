@@ -7,7 +7,8 @@
         <div class="col-lg-9 mx-auto">
             {% for message in messages %}
                 <div{% if message.tags %}
-                    class="alert alert-{{ message.tags }} mx-auto text-center"{% endif %}><i class="bi bi-check-circle-fill"></i> {{ message }}</div>
+                    class="alert alert-{{ message.tags }} mx-auto text-center"{% endif %}><i
+                        class="bi bi-check-circle-fill"></i> {{ message }}</div>
             {% endfor %}
         </div>
     {% endif %}
@@ -27,13 +28,15 @@
                 {% for p in category.list %}
                     <div class="row card-body border-bottom py-1">
                         <div class="col-2 fw-bolder align-self-center"><a class="text-decoration-none"
-                                                      href="{{ p.get_absolute_url }}">{{ p.name }}</a></div>
+                                                                          href="{{ p.get_absolute_url }}">{{ p.name }}</a>
+                        </div>
                         <div class="col text-center align-self-center">{{ p.diametr }}</div>
                         <div class="col text-center align-self-center">{{ p.mark_steel }}</div>
                         <div class="col text-center align-self-center">{{ p.price_toon | floatformat }}</div>
                         <div class="col text-center align-self-center"><b>{{ p.price }}</b></div>
                         <div class="col-2 text-center">
-                            <form action="{% url "cart:cart_add" p.id %}" method="post">
+                            <form class="add_to_cart" action="{% url "cart:cart_add" p.id %}"
+                                  method="post">
                                 {% csrf_token %}
                                 {{ cart_product_form.update }}
                                 <div class="input-group d-flex flex-nowrap">
@@ -50,4 +53,52 @@
             </div>
         </div>
     {% endfor %}
+{% endblock %}
+{% block javascript %}
+    <script>
+        $(document).ready(function () {
+            // отслеживаем событие отправки формы
+            $('.add_to_cart').submit(function () {
+                // создаем AJAX-вызов
+                $.ajax({
+                    data: $(this).serialize(), // получаем данные формы
+                    type: $(this).attr('method'), // GET или POST
+                    url: $(this).attr('action'),
+                    // если успешно, то
+                    success: function (response) {
+                        //alert("Спасибо, что обратились к нам ");
+                    const shopping = (' ' + response.count_item_cart + ' позиции на сумму ' + response.total_pice_cart + ' руб.')
+                    const iClass = document.getElementById('subheader').querySelector('div.cart')
+                    //Удаление элемента
+                    while (iClass.firstChild) {
+                        iClass.removeChild(iClass.lastChild);
+                    }
+                    
+                    //Добавление элемента
+                    const textPosition = '<i class="bi bi-cart-check"></i><a class="text-white text-decoration-none" href="/cart/">' + shopping + '</a>'
+                    iClass.insertAdjacentHTML('beforeend', textPosition)
+
+                    //Создание сообщения
+                    let divCont = document.createElement('div')
+                    divCont.className = 'alert alert-success mx-auto text-center '
+                    divCont.innerHTML = '<i class="bi bi-check-circle-fill"> </i>' + response.msg
+                    document.querySelector('nav.navbar').after(divCont)
+
+                        console.log(this.data + '-----------------------------------------' + this.url)
+                        console.log('quantity: ' + response.quantity)
+                        console.log('msg: ' + response.msg)
+                        console.log('total_pice_cart: ' + response.total_pice_cart)
+                        console.log('count_item_cart: ' + response.count_item_cart)
+                    },
+                    // если ошибка, то
+                    error: function (response) {
+                        // предупредим об ошибке
+                        alert(response.responseJSON.errors);
+                        console.log(response.responseJSON.errors)
+                    }
+                });
+                return false;
+            });
+        })
+    </script>
 {% endblock %}
