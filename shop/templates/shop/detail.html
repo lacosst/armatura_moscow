@@ -53,7 +53,7 @@
 
                             <div class="card mt-4">
                                 <div class="card-header"><p class="h4">Характеристики</p></div>
-                                <ul class="list-group list-group-flush">
+                                <ul class="list-group list-group-flush p-2">
                                     <li class="list-group-item">
                                         <div class="fs-sm">
                                             <span class="text-heading fw-medium me-1">Диаметр:</span>
@@ -74,7 +74,7 @@
                                 </ul>
                             </div>
                             <div class="mt-5">
-                                <p class="fs-3">Цена за метр:<span class="h3 fw-normal text-accent me-1"> {{ product.price }}<small> руб.</small></span></p>
+                                <p class="fs-4">Цена за метр:<span class="h3 fw-normal text-accent me-1"> {{ product.price }}<small> руб.</small></span></p>
                                 <form id="add_to_cart" action="{% url "cart:cart_add" product.id %}" method="post">
                                     {% csrf_token %}
                                     {{ cart_product_form.update }}
@@ -94,9 +94,11 @@
                 <div class="row">
                     <div class="col-lg p-lg-4 mx-5">
                         <h3 class="border-bottom pb-2">Описание</h3>
+                    <div style="white-space: normal">
                         {% autoescape off %}
                         {{ product.description|linebreaks }}
                         {% endautoescape %}
+                    </div>
                     </div>
                 </div>
             {% endif %}
