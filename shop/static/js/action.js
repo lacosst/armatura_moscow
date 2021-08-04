@@ -17,15 +17,8 @@ bodyCheck.addEventListener("click", () => {
   }
 });
 
-// const cartPlus = document.querySelector('button.cart_plus')
-// cartPlus.addEventListener('click', ()=>{
-
-//     console.log(cartPlus)
-// })
-
 function workMessenger(count_item_cart, msg, total_pice_cart, quantity) {
-    
-    //alert("Спасибо, что обратились к нам ");
+  
     const shopping = (' ' + count_item_cart + ' позиции на сумму ' + total_pice_cart + ' руб.')
     const iClass = document.getElementById('subheader').querySelector('div.cart')
     //Удаление элемента

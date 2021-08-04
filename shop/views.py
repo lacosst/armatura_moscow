@@ -23,10 +23,17 @@ def product_detail(request, product_slug):
 
     cart_product_form = CartAddProductForm()
     categories = Category.objects.all()
-    return render(request,
-                  'shop/detail.html',
-                  {'product': product,
-                   'categories': categories,
-                   'cart_product_form': cart_product_form})
+    context = {
+        'product': product,
+        'categories': categories,
+        'cart_product_form': cart_product_form
+    }
+    return render(request, 'shop/detail.html', context=context)
 
 
+def contact(request):
+    categories = Category.objects.all()
+    context = {
+        'categories': categories
+    }
+    return render(request, 'shop/contact.html', context=context)

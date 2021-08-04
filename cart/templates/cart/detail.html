@@ -82,7 +82,7 @@
                     // если успешно, то
                     success: function (response) {
                         //alert("Спасибо, что обратились к нам ");
-                        workMessenger()
+                        workMessenger(response.count_item_cart, response.msg, response.total_pice_cart, response.quantity)
                         console.log(response)
                         console.log(this.data + '-----------------------------------------' + this.url)
                         console.log('quantity: ' + response.quantity)
@@ -101,17 +101,17 @@
                 return false;
             });
 
-            {#$('.cart_plus').on('click', function () {#}
-            {#    $.ajax({#}
-            {#        url: $(this).attr('action'),#}
-            {#        type: 'post',#}
-            {#        data: $(this).serialize(),#}
-            {#        success: function (response) {#}
-            {#            console.log(response.rs)#}
-            {#        }#}
-            {#    });#}
-            {# });#}
-            {#return false;#}
+            // $('.cart_plus').on('click', function () {
+            //     $.ajax({
+            //        url: $(this).attr('action'),
+            //         type: 'post',
+            //         data: $(this).serialize(),
+            //         success: function (response) {
+            //             console.log(response.rs)
+            //         }
+            //     });
+            //  });
+            return false;
         });
     </script>
 {% endblock %}

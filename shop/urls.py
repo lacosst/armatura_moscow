@@ -10,6 +10,7 @@ urlpatterns = [
     path('', shop, name='home'),
     path('<slug:cat_slug>', shop, name='category'),
     path('product/<slug:product_slug>', product_detail, name='product'),
+    path('contact/', contact, name='contact'),
 ]
 
 if settings.DEBUG:
