@@ -40,6 +40,7 @@ def cart_remove(request, product_id):
     return redirect('cart:cart_detail')
 
 
+@require_POST
 def cart_update(request, product_id):
     cart = Cart(request)
     product = get_object_or_404(Product, id=product_id)
@@ -51,8 +52,9 @@ def cart_update(request, product_id):
         cart.add(product=product,
                  quantity=int(request.POST.get('qwt')),
                  update_quantity=form['update'])
-
+        msg = f"{product} х {int(request.POST.get('qwt'))} метров добавлено в корзину ↓"
         data = {'quantity': int(request.POST.get('qwt')),
+                'msg': msg,
                 'total_pice_cart': cart.get_total_price(),
                 'count_item_cart': cart.__len__()}
         # print(data)

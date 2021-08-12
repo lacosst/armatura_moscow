@@ -1,5 +1,6 @@
 {% extends "shop/base.html" %}
 {% load static %}
+{% load humanize %}
 {% block title %}
     Корзина | ARMATURA.MOSCOW арматура в Одинцово
 {% endblock %}
@@ -9,7 +10,7 @@
         {% if cart %}
             <h1 class="mb-4">Ваша корзина</h1>
             <div class="cart card card-body shadow border-0">
-                <div class="row card-header mb-2 fs-6 fw-bold py-3">
+                <div class="row card-header fs-6 fw-bold py-3">
                     <div class="col-3">Наименование</div>
                     <div class="col text-center">Количество, м.</div>
                     <div class="col text-center">Цена за метр, руб.</div>
@@ -18,27 +19,27 @@
                 </div>
                 {% for item in cart %}
                     {% with product=item.product %}
-                        <div class="row card-body border-bottom ">
-                            <div class="col-3 fw-bolder"><a class="text-decoration-none"
+                        <div class="row card-body border-bottom">
+                            <div class="col-3 fw-bolder align-self-center"><a class="text-decoration-none"
                                                             href="{% url 'shop:product' product.slug %}">{{ product.name }}</a>
                             </div>
-                            <div class="col text-center">
+                            <div class="col text-center align-self-center">
                                 <form class="cart_update" method="post"
                                       action="{% url 'cart:cart_update' product.id %}">
                                     {% csrf_token %}
-                                    <div class="input-group mb-3">
-                                        <button type="submit" class="input-group-text btn btn-primary cart_minus">
+                                    <div class="input-group">
+                                        <button type="submit" class="input-group-text btn btn-primary cart_minus" data-direction="minus">
                                             <b>-</b></button>
-                                        <input type="number" class="form-control text-center in" aria-label="Метров"
+                                        <input type="number" class="form-control text-center in" min="1" aria-label="Метров"
                                                name="qwt" value="{{ item.quantity }}">
-                                        <button type="submit" class="cart_plus input-group-text btn btn-primary">
+                                        <button type="submit" class="cart_plus input-group-text btn btn-primary" data-direction="plus">
                                             <b>+</b></button>
                                     </div>
                                 </form>
                             </div>
-                            <div class="col text-center">{{ item.price }}</div>
-                            <div class="col text-center">{{ item.total_price }}</div>
-                            <div class="col text-center fs-3"><a href="{% url "cart:cart_remove" product.id %}"><i
+                            <div class="col text-center cost_price align-self-center">{{ item.price }}</div>
+                            <div class="col text-center cost_total align-self-center">{{ item.total_price|intcomma }}</div>
+                            <div class="col text-center fs-3 align-self-center"><a href="{% url "cart:cart_remove" product.id %}"><i
                                     class="bi bi-cart-x"></i></a>
                             </div>
                         </div>
@@ -46,7 +47,7 @@
                 {% endfor %}
                 <div class="row card-footer">
                     <div class="col-5 text-end">Итого:</div>
-                    <div class="col-5">{{ cart.get_total_price }} руб.</div>
+                    <div class="col-5">{{ cart.get_total_price|intcomma }} руб.</div>
                 </div>
 
             </div>
@@ -61,7 +62,7 @@
             <div class="alert alert-warning pb-1" role="alert" style="width: fit-content;">
                 <p>В вашей корзине больше нет товаров, для добавления товара перейдите в магазин</p>
             </div>
-            <div class="row mt-4">
+            <div class="row my-4">
                 <p class="">
                     <a href="{% url "shop:home" %}" class="btn btn-primary">Перейти в магазин</a>
                 </p>
@@ -73,7 +74,7 @@
     <script>
         $(document).ready(function () {
             // отслеживаем событие отправки формы
-            $('.cart_update').submit(function () {
+            $('.cart_update').on('input', function () {
                 // создаем AJAX-вызов
                 $.ajax({
                     data: $(this).serialize(), // получаем данные формы
@@ -81,12 +82,11 @@
                     url: $(this).attr('action'),
                     // если успешно, то
                     success: function (response) {
-                        //alert("Спасибо, что обратились к нам ");
+                        //alert("Спасибо, что обратились к нам ");                
                         workMessenger(response.count_item_cart, response.msg, response.total_pice_cart, response.quantity)
                         console.log(response)
                         console.log(this.data + '-----------------------------------------' + this.url)
                         console.log('quantity: ' + response.quantity)
-                        // console.log()
                         console.log('msg: ' + response.msg)
                         console.log('total_pice_cart: ' + response.total_pice_cart)
                         console.log('count_item_cart: ' + response.count_item_cart)
@@ -100,18 +100,35 @@
                 });
                 return false;
             });
-
-            // $('.cart_plus').on('click', function () {
-            //     $.ajax({
-            //        url: $(this).attr('action'),
-            //         type: 'post',
-            //         data: $(this).serialize(),
-            //         success: function (response) {
-            //             console.log(response.rs)
-            //         }
-            //     });
-            //  });
-            return false;
+            $('.cart_update').on('click', function () {
+                    // создаем AJAX-вызов
+                $.ajax({
+                    data: $(this).serialize(), // получаем данные формы
+                    type: $(this).attr('method'), // GET или POST
+                    url: $(this).attr('action'),
+                    // если успешно, то
+                    success: function (response) {
+                        //alert("Спасибо, что обратились к нам ");                
+                        // workMessenger(response.count_item_cart, response.msg, response.total_pice_cart, response.quantity)
+                        let footerCost = document.querySelector('.card-footer').childNodes[3]
+                        footerCost.innerText = String(response.total_pice_cart).split('.').join(',') + ' руб.'
+                        // console.log(footerCost)
+                        console.log(response)
+                        console.log(this.data + '-----------------------------------------' + this.url)
+                        console.log('quantity: ' + response.quantity)
+                        console.log('msg: ' + response.msg)
+                        console.log('total_pice_cart: ' + response.total_pice_cart)
+                        console.log('count_item_cart: ' + response.count_item_cart)
+                    },
+                    // если ошибка, то
+                    error: function (response) {
+                        // предупредим об ошибке
+                        alert(response.responseJSON);
+                        console.log(response.responseJSON)
+                    }
+                });
+                return false;               
+            })
         });
     </script>
 {% endblock %}

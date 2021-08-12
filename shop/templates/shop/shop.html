@@ -1,4 +1,5 @@
 {% extends 'shop/base.html' %}
+{% load humanize %}
 {% block title %}
     {% if category %}{{ category.name }}{% else %}ARMATURA.MOSCOW арматура в Одинцово{% endif %}
 {% endblock %}
@@ -17,7 +18,7 @@
         <div class="col-lg-9 mx-auto mt-3 mb-7">
             <h2>{{ category.grouper }}</h2>
             <div class="cart card card-body shadow border-0 pb-0">
-                <div class="row card-header mb-2 fw-bold py-3">
+                <div class="row card-header fw-bold py-3">
                     <div class="col-2">Продукция</div>
                     <div class="col text-center">Диаметр</div>
                     <div class="col text-center">Марка стали</div>
@@ -26,13 +27,13 @@
                     <div class="col-2 text-center">Кол-во</div>
                 </div>
                 {% for p in category.list %}
-                    <div class="row card-body border-bottom py-1">
+                    <div class="row border-bottom py-1 px-3">
                         <div class="col-2 fw-bolder align-self-center"><a class="text-decoration-none"
                                                                           href="{{ p.get_absolute_url }}">{{ p.name }}</a>
                         </div>
                         <div class="col text-center align-self-center">{{ p.diametr }}</div>
                         <div class="col text-center align-self-center">{{ p.mark_steel }}</div>
-                        <div class="col text-center align-self-center">{{ p.price_toon | floatformat }}</div>
+                        <div class="col text-center align-self-center">{{ p.price_toon|floatformat|intcomma }}</div>
                         <div class="col text-center align-self-center"><b>{{ p.price }}</b></div>
                         <div class="col-2 text-center">
                             <form class="add_to_cart" action="{% url "cart:cart_add" p.id %}"

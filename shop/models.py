@@ -51,7 +51,7 @@ class Product(models.Model):
     def get_price(self):
         a = self.price_toon / 1000  # получаем цену за 1 кг
         b = float(self.meter_weight) * float(a)  # получаемм ценну зrа 1 м
-        c = int(b) + (int(b) * 0.2)  # делаем наценку
+        c = b + (b * 0.2)  # делаем наценку
         return c
 
     def save(self, *args, **kwargs):

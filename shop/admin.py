@@ -8,7 +8,7 @@ class CategoryAdmin(admin.ModelAdmin):
 
 
 class ProductAdmin(admin.ModelAdmin):
-    list_display = ['category', 'name', 'meter_weight', 'price_toon', 'price',  'available', 'updated']
+    list_display = ['category', 'name', 'mark_steel', 'meter_weight', 'price_toon', 'price',  'available', 'updated']
     list_filter = ['available', 'created', 'updated', 'category']
     list_editable = ['meter_weight', 'price_toon', 'available']
     list_display_links = ['category', 'name']
