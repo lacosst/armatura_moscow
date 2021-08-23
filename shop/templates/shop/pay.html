@@ -1,0 +1,39 @@
+{% extends 'shop/base.html' %}
+{% block title %}
+    Оплата | ARMATURA.MOSCOW арматура в Одинцово
+{% endblock %}
+{% block content %}
+        <h1>Оплата</h1>
+    <div class="card shadow border-0">
+        <div class="card-header fs-6" style="font-size: 10px;">
+            <nav style="--bs-breadcrumb-divider: url(&#34;data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='8' height='8'%3E%3Cpath d='M2.5 0L1 1.5 3.5 4 1 6.5 2.5 8l4-4-4-4z' fill='currentColor'/%3E%3C/svg%3E&#34;);"
+                 aria-label="breadcrumb">
+                <ol class="breadcrumb m-0">
+                    <li class="breadcrumb-item"><a class="text-decoration-none" href="{% url 'shop:home' %}">Главная</a>
+                    </li>
+                    <li class="breadcrumb-item active" aria-current="page">Оплата</li>
+                </ol>
+            </nav>
+        </div>
+        <div class="row card-body px-5 py-3">
+            <h3 class="my-3">Способы оплаты</h3>
+                            <div class="col-xl-3 col-md-6 col-sm-12 mb-grid-gutter">
+                    <div class="card card-body text-center shadow border-0 h-85">
+                        <i class="bi bi-cash-coin h3 mt-1 text-primary"></i>
+                        <h3 class="h6 mb-2">Наличные</h3>
+                    </div>
+                </div>
+
+                <div class="col-xl-3 col-md-6 col-sm-12 mb-grid-gutter ">
+                    <div class="card card-body text-center shadow border-0 h-85">
+                        <i class="bi bi-credit-card h3 mt-1 text-primary"></i>
+                        <h3 class="h6 mb-2">Банковская карта</h3>
+                        <p class="fs-sm text-muted text-wrap"></p>
+                    </div>
+                </div>
+            <ul class="my-3 px-4">
+                <li>Оплата производится при получении продукции на складе <a class="text-decoration-none" href="{% url 'shop:pickup' %}">самовывоза</a></li>
+            </ul>
+        </div>
+    </div>
+{% endblock %}

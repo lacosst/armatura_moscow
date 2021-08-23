@@ -1,13 +1,16 @@
 import random
 import csv
 import json
-from datetime import datetime
 
 import requests
 from bs4 import BeautifulSoup
 from time import sleep
+import os
+import django
 
-# from past.builtins import raw_input
+os.environ.setdefault("DJANGO_SETTINGS_MODULE", "armatura_moscow.settings")
+django.setup()
+from shop.models import Product
 
 
 def get_data(url):
@@ -23,30 +26,19 @@ def get_data(url):
     r = requests.get(url=url, headers=headers)
     src = r.text
 
+    # print(os.getcwd())
     # сохраняем документ в файл
-    with open('data/index.html', 'w', encoding='utf-8') as file:
+    with open('/var/www/u1042075/data/www/armatura.moscow/armatura_moscow/paeser/data/index.html', 'w', encoding='utf-8') as file:
         file.write(src)
 
     # Читаем документ
-    with open('data/index.html', encoding='utf-8') as file:
+    with open('/var/www/u1042075/data/www/armatura.moscow/armatura_moscow/paeser/data/index.html', encoding='utf-8') as file:
         doc = file.read()
 
     soup = BeautifulSoup(doc, 'lxml')
     links = soup.find_all('ul', class_='inserted')
 
-    # получаем все категории
-    # all_categories = {}
-    # for i in links:
-    #     li = i.find_all('a')
-    #     for item in li:
-    #         name = item.text
-    #         url = 'https://mc.ru' + item.get('href')
-    #         all_categories[name] = url
-    #
-    # with open('all_categories.json', 'w', encoding='utf-8') as file:
-    #     json.dump(all_categories, file, indent=4, ensure_ascii=False)
-
-    with open('categories.json', encoding='utf-8') as file:
+    with open('/var/www/u1042075/data/www/armatura.moscow/armatura_moscow/paeser/categories.json', encoding='utf-8') as file:
         all_categories = json.load(file)
 
     iteration_count = int(len(all_categories)) - 1
@@ -55,17 +47,8 @@ def get_data(url):
 
     # file_name = datetime.now().strftime("%d_%m_%Y_%H_%M")
 
-    with open('../Price.csv', 'w', encoding='cp1251') as file:
+    with open('/var/www/u1042075/data/www/armatura.moscow/armatura_moscow/paeser/Price.csv', 'w') as file:
         writer = csv.writer(file, delimiter=';', lineterminator='\n')
-        # writer.writerow(
-        #     (   'Категория',
-        #         'Наименование',
-        #         'Размер/Диаметр',
-        #         'Марка стали',
-        #         'Длина',
-        #         'Цена за тонну',
-        #     )
-        # )
 
     for category_name, category_url in all_categories.items():
 
@@ -77,40 +60,17 @@ def get_data(url):
         req = requests.get(url=category_url, headers=headers)
         src = req.text
 
-        with open(f'data/{count}_{category_name}.html', 'w', encoding='utf-8') as file:
+        with open(f'/var/www/u1042075/data/www/armatura.moscow/armatura_moscow/paeser/data/{count}_{category_name}.html', 'w', encoding='utf-8') as file:
             file.write(src)
 
-        with open(f'data/{count}_{category_name}.html', encoding='utf-8') as file:
+        with open(f'/var/www/u1042075/data/www/armatura.moscow/armatura_moscow/paeser/data/{count}_{category_name}.html', encoding='utf-8') as file:
             src = file.read()
 
         soup = BeautifulSoup(src, 'lxml')
 
-        # формируем заголовки CSV
-        # with open(f'result/csv/{count}_{category_name}.csv', 'w', encoding='cp1251') as file:
-        #     writer = csv.writer(file, delimiter=';', lineterminator='\n')
-        #     writer.writerow(
-        #         (   'Категория',
-        #             'Наименование',
-        #             'Размер/Диаметр',
-        #             'Марка стали',
-        #             'Длина',
-        #             'Цена за тонну',
-        #         )
-        #     )
-
-        # собираем данные товаров
-        # with open('../Price.csv', 'a', encoding='cp1251') as file:
-        #     writer = csv.writer(file, delimiter=';', lineterminator='\n')
-        #     writer.writerow(
-        #         (
-        #             category_name,
-        #         )
-        #     )
-
         try:
+            i = 0
             product_data = soup.find('tbody').find_all('tr')
-            # print(product_data)
-
             for item in product_data:
                 product_td = item.find_all('td')
                 title = product_td[0].text.replace('→', '').strip()
@@ -119,7 +79,7 @@ def get_data(url):
                 dlina = product_td[3].text.strip()
                 price = product_td[5].text.replace(' ', '').strip()
 
-                with open(f'../Price.csv', 'a', encoding='cp1251') as file:
+                with open(f'/var/www/u1042075/data/www/armatura.moscow/armatura_moscow/paeser/Price.csv', 'a') as file:
                     writer = csv.writer(file, delimiter=';', lineterminator='\n')
                     writer.writerow(
                         (
@@ -128,13 +88,12 @@ def get_data(url):
                             diametr,
                             marka_stali,
                             dlina,
-                            price
+                            price,
+                            i
                         )
                     )
-                # print(title, diametr, marka_stali, dlina, price)
-
+                    i += 1
             count += 1
-
         except AttributeError:
             continue
 
@@ -149,8 +108,74 @@ def get_data(url):
         sleep(random.randrange(0, 1))
 
 
+def update_product():
+    # Вес метра
+    ves_metra = 0
+    vm = {
+        '5.5': '0.19',
+        '6': '0.22',
+        '6.5': '0.26',
+        '8': '0.40',
+        '10': '0.62',
+        '12': '0.89',
+        '14': '1.21',
+        '16': '1.58',
+        '18': '2.00',
+        '20': '2.47',
+        '22': '2.98',
+        '25': '3.85',
+        '28': '4.83',
+        '32': '6.31',
+        '36': '7.99',
+        '40': '9.87',
+    }
+
+    with open('/var/www/u1042075/data/www/armatura.moscow/armatura_moscow/paeser/Price.csv') as f:
+        reader = csv.reader(f, delimiter=';')
+        for row in reader:
+
+            if 'мотки' in row[1]:
+                row[1] = row[1].replace('мотки', 'бухта')
+            if ',' in row[2]:
+                row[2] = row[2].replace(',', '.')
+
+            # задаем категорию
+            if row[0] == 'Арматура рифленая А3':
+                cat_id = 5
+            elif row[0] == 'Арматура гладкая А1':
+                cat_id = 3
+            elif row[0] == 'Катанка':
+                cat_id = 4
+            elif row[0] == 'Арматура Ат800':
+                cat_id = 6
+
+            if cat_id == 4 and 'мотки' in row[4]:
+                row[1] = row[1] + ' бухта'
+
+            if row[2] in vm.keys():
+                ves_metra = vm.get(row[2])
+                # print(row[1], ves_metra, ' # ', row[6])
+
+            Product.objects.update_or_create(
+                category_id=cat_id,
+                name=row[1],
+                diametr=row[2],
+                mark_steel=row[3],
+                dlina=row[4],
+                defaults={
+                    'price_toon': int(row[5]),
+                    'meter_weight': ves_metra,
+                    'order': row[6]
+                }
+            )
+
+
 def main():
     get_data('https://mc.ru/products/msk')
+    sleep(5)
+    print('################')
+    update_product()
+    print('update complete')
 
 
 if __name__ == '__main__':

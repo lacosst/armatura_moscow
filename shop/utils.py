@@ -42,3 +42,4 @@ def from_cyrillic_to_eng(text: str):
     for ch in text:
         tmp += cyrillic_letters.get(ch, ch)
     return tmp
+

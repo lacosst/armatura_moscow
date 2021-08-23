@@ -1,12 +1,14 @@
 from django.shortcuts import render, get_object_or_404
 from .models import Category, Product
 from cart.forms import CartAddProductForm
+from django.views.generic.base import TemplateView
+from .mixin import DataMixin
 
 
 def shop(request, cat_slug=None):
     category = None
     categories = Category.objects.all()
-    products = Product.objects.filter(available=True).order_by('category__order',)
+    products = Product.objects.filter(available=True).order_by('category__order', 'order')
     cart_product_form = CartAddProductForm()
     if cat_slug:
         category = get_object_or_404(Category, slug=cat_slug)
@@ -37,3 +39,30 @@ def contact(request):
         'categories': categories
     }
     return render(request, 'shop/contact.html', context=context)
+
+
+class PickupView(DataMixin, TemplateView):
+    template_name = 'shop/pickup.html'
+
+    def get_context_data(self, **kwargs):
+        data = self.get_user_context()
+        context = dict(list(data.items()))
+        return context
+
+
+class PayView(DataMixin, TemplateView):
+    template_name = 'shop/pay.html'
+
+    def get_context_data(self, **kwargs):
+        data = self.get_user_context()
+        context = dict(list(data.items()))
+        return context
+
+
+class CuttingView(DataMixin, TemplateView):
+    template_name = 'shop/cutting.html'
+
+    def get_context_data(self, **kwargs):
+        data = self.get_user_context()
+        context = dict(list(data.items()))
+        return context

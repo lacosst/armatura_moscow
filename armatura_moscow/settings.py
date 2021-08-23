@@ -25,7 +25,7 @@ SECRET_KEY = 'django-insecure-=@pmzf-=r0s727)h&5*x+0g$t5_40(xsyg7p14_pnz+x1(r*su
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = ['192.168.1.39', '127.0.0.1']
+ALLOWED_HOSTS = ['armatura.moscow', 'www.armatura.moscow', '192.168.1.39']
 
 
 # Application definition
@@ -37,10 +37,12 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
+    'django.contrib.sitemaps',
     'shop.apps.ShopConfig',
     'cart.apps.CartConfig',
     'orders.apps.OrdersConfig',
     'django.contrib.humanize',
+    'django_crontab',
 ]
 
 MIDDLEWARE = [
@@ -124,7 +126,7 @@ USE_TZ = True
 # https://docs.djangoproject.com/en/3.2/howto/static-files/
 
 STATIC_URL = '/static/'
-STATIC_ROOT = os.path.join(BASE_DIR, 'static')
+STATIC_ROOT = 'static/'
 STATICFILES_DIRS = []
 
 # Default primary key field type
@@ -133,7 +135,7 @@ STATICFILES_DIRS = []
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
 MEDIA_URL = '/media/'
-MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
+MEDIA_ROOT = 'media/'
 
 CART_SESSION_ID = 'cart'
 
@@ -143,5 +145,9 @@ EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
 EMAIL_HOST = 'mail.hosting.reg.ru'
 EMAIL_HOST_USER = 'test@armatura.moscow'
 EMAIL_HOST_PASSWORD = 'E9g1G9x2'
-EMAIL_PORT = 25
+EMAIL_PORT = 25  # 587
 EMAIL_USE_TLS = False
+
+CRONJOBS = [
+    ('00 08,19 * * *', 'paeser.cron.update_product')
+]

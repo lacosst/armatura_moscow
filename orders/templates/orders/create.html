@@ -3,7 +3,6 @@
 {% block title %}Офромление заказа | ARMATURA.MOSCOW арматура в Одинцово{% endblock %}
 
 {% block content %}
-    <div class="col-lg-9 mx-auto">
         <h1 class="mb-4">Оформление заказа</h1>
 
         <div class="row g-5">
@@ -56,12 +55,11 @@
                             </div>
                             {{ form.email }}
                         </div>
-                        <input type="submit" value="Офрмить заказ" class="btn btn-success px-5 mx-auto">
+                        <input type="submit" value="Оформить заказ" class="btn btn-success px-5 mx-auto">
                     </form>
                 </div>
             </div>
         </div>
-    </div>
 {% endblock %}
 {% block javascript %}
 <script>
@@ -95,5 +93,6 @@ window.addEventListener("DOMContentLoaded", function () {
     input.addEventListener("input", mask, false);
     input.addEventListener("focus", mask, false);
     input.addEventListener("blur", mask, false);
-});{% endblock %}
+});
 </script>
+{% endblock %}

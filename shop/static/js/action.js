@@ -43,7 +43,7 @@ function workMessenger(count_item_cart, msg, total_pice_cart, quantity) {
 
   //Создание сообщения
   let divCont = document.createElement("div");  
-    divCont.className = 'alert alert-success mx-auto text-center';
+    divCont.className = 'alert alert-success buy-message mx-auto text-center';
     divCont.innerHTML = '<i class="bi bi-check-circle-fill"> </i>' + msg;
     document.querySelector("nav.navbar").after(divCont);  
 }
@@ -56,8 +56,9 @@ btns.forEach((btn) => {
     const inp = this.parentElement.querySelector('.in');
     const currentValue = Number(inp.value);
     const whoParent = inp.parentNode.parentNode.parentNode.parentNode;
-    let currentPrice = whoParent.childNodes[5].innerHTML;
-    const whoChildTotal = whoParent.childNodes[7];
+    // let currentPrice = whoParent.childNodes[5].innerHTML;
+    let currentPrice = whoParent.childNodes[5].querySelector('.items').innerHTML;
+    const whoChildTotal = whoParent.childNodes[7].querySelector('.items');
     let whoChildNumber = Number(currentPrice.split(",").join("."));
     let newValue;
     let newWhoChild;
@@ -75,7 +76,7 @@ btns.forEach((btn) => {
       }
     }
     inp.value = newValue;
-    whoChildTotal.innerText = newWhoChild;
+    whoChildTotal.innerText = numberWithSpaces(newWhoChild);
   });
 });
 
@@ -85,17 +86,25 @@ inputValue.forEach ((inValue) => {
   inValue.addEventListener('input',() => {
     const whoParent = inValue.parentNode.parentNode.parentNode.parentNode;
     const nameGoods = whoParent.childNodes[1].textContent;
-    const currentPrice = whoParent.childNodes[5].innerHTML;
-    const whoChildTotal = whoParent.childNodes[7];
-    if (+inValue.value < 1){
-      alert(`Количество товара ${nameGoods} должно быть больше 0`)
+    const currentPrice = whoParent.childNodes[5].querySelector('.items').innerHTML;
+    const whoChildTotal = whoParent.childNodes[7].querySelector('.items');
+    if (+inValue.value <= 0 || undefined){
+      correctNum = prompt(`Количество товара ${nameGoods} должно быть больше 0`)
       // console.log('это НОООООООООООООООООООООЛЛЛЛЛЛЛЛЛЛЛЛЛЬ')
       whoChildTotal.innerHTML = currentPrice
-      inValue.value = 1
+      // inValue.value = 1
+      inValue.value = correctNum
     }
     let currentValue = (+inValue.value * Number(currentPrice.split(",").join("."))).toFixed(2)
-    let changeValue = String(currentValue).split('.').join(',')
+    let changeValue = numberWithSpaces(String(currentValue).split('.').join(','))
     whoChildTotal.innerText = changeValue
     // console.log(inputValue)
   })
 })
+
+//Разряды для чисел
+function numberWithSpaces(num) {
+  let parts = num.toString().split(".");
+  parts[0] = parts[0].replace(/\B(?=(\d{3})+(?!\d))/g, " ");
+  return parts.join(".");
+}

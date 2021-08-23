@@ -1,16 +1,16 @@
-from django.conf.urls import url
+from django.conf import settings
 from django.conf.urls.static import static
 from django.contrib import admin
 from django.urls import path, include
-
 from armatura_moscow import settings
 from shop.views import *
+
 
 urlpatterns = [
     path('admin/', admin.site.urls),
     path('cart/', include('cart.urls')),
     path('', include('shop.urls')),
-    url(r'^orders/', include('orders.urls', namespace='orders')),
+    path('orders/', include('orders.urls')),
 ]
 
 

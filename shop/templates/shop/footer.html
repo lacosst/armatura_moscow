@@ -1,75 +1,67 @@
 <footer class="mt-auto">
     <div class="container-xl shadow main_footer mt-5 px-4 pt-3">
-        <div class="row">
-            <div class="col-2">
-                <h5>Продукция</h5>
-                <ul class="nav flex-column">
-                    {% for c in categories %}
-                        {% if category.slug == c.slug %}
-                            <li class="nav-item mb-2">
-                                {{ c.name }}
-                            </li>
-                        {% else %}
-                            <li class="nav-item mb-2">
-                                <a class="nav-link p-0 text-muted" href="{% url 'shop:category' c.slug %}">{{ c.name }}</a>
-                            </li>
-                        {% endif %}
-                    {% endfor %}
-                </ul>
-            </div>
+{#        <div class="row">#}
+{#            <div class="col-2">#}
+{#                <h5>Продукция</h5>#}
+{#                <ul class="nav flex-column">#}
+{#                    {% for c in categories %}#}
+{#                        {% if category.slug == c.slug %}#}
+{#                            <li class="nav-item mb-2">#}
+{#                                {{ c.name }}#}
+{#                            </li>#}
+{#                        {% else %}#}
+{#                            <li class="nav-item mb-2">#}
+{#                                <a class="nav-link p-0 text-muted" href="{% url 'shop:category' c.slug %}">{{ c.name }}</a>#}
+{#                            </li>#}
+{#                        {% endif %}#}
+{#                    {% endfor %}#}
+{#                </ul>#}
+{#            </div>#}
+{##}
+{#            <div class="col-2">#}
+{#                <h5>Информация</h5>#}
+{#                <ul class="nav flex-column">#}
+{#                    <li class="nav-item mb-2"><a href="{% url 'shop:pay' %}" class="nav-link p-0 text-muted">Оплата</a></li>#}
+{#                    <li class="nav-item mb-2"><a href="{% url 'shop:pickup' %}" class="nav-link p-0 text-muted">Самовывоз</a></li>#}
+{#                    <li class="nav-item mb-2"><a href="{% url 'shop:contact' %}" class="nav-link p-0 text-muted">Контакты</a></li>#}
+{#                </ul>#}
+{#            </div>#}
+{##}
+{#            <div class="col-2">#}
+{#                <h5>Раздел</h5>#}
+{#                <ul class="nav flex-column">#}
+{#                    <li class="nav-item mb-2"><a href="#" class="nav-link p-0 text-muted">Главная</a></li>#}
+{#                    <li class="nav-item mb-2"><a href="#" class="nav-link p-0 text-muted">Функции</a></li>#}
+{#                    <li class="nav-item mb-2"><a href="#" class="nav-link p-0 text-muted">Цены</a></li>#}
+{#                    <li class="nav-item mb-2"><a href="#" class="nav-link p-0 text-muted">Ответы</a></li>#}
+{#                    <li class="nav-item mb-2"><a href="#" class="nav-link p-0 text-muted">О нас</a></li>#}
+{#                </ul>#}
+{#            </div>#}
+{##}
+{#            <div class="col-4 offset-1">#}
+{#                <form>#}
+{#                    <h5>Подписывайтесь на нашу новостную рассылку</h5>#}
+{#                    <p>Ежемесячный дайджест всего нового и интересного от нас.</p>#}
+{#                    <div class="d-flex w-100 gap-2">#}
+{#                        <label for="newsletter1" class="visually-hidden">Адрес электронной почты</label>#}
+{#                        <input id="newsletter1" type="text" class="form-control" placeholder="Адрес электронной почты">#}
+{#                        <button class="btn btn-primary" type="button">Подписаться</button>#}
+{#                    </div>#}
+{#                </form>#}
+{#            </div>#}
+{#        </div>#}
 
-            <div class="col-2">
-                <h5>Информация</h5>
-                <ul class="nav flex-column">
-                    <li class="nav-item mb-2"><a href="#" class="nav-link p-0 text-muted">Главная</a></li>
-                    <li class="nav-item mb-2"><a href="#" class="nav-link p-0 text-muted">Функции</a></li>
-                    <li class="nav-item mb-2"><a href="#" class="nav-link p-0 text-muted">Цены</a></li>
-                    <li class="nav-item mb-2"><a href="#" class="nav-link p-0 text-muted">Ответы</a></li>
-                    <li class="nav-item mb-2"><a href="#" class="nav-link p-0 text-muted">О нас</a></li>
-                </ul>
-            </div>
-
-            <div class="col-2">
-                <h5>Раздел</h5>
-                <ul class="nav flex-column">
-                    <li class="nav-item mb-2"><a href="#" class="nav-link p-0 text-muted">Главная</a></li>
-                    <li class="nav-item mb-2"><a href="#" class="nav-link p-0 text-muted">Функции</a></li>
-                    <li class="nav-item mb-2"><a href="#" class="nav-link p-0 text-muted">Цены</a></li>
-                    <li class="nav-item mb-2"><a href="#" class="nav-link p-0 text-muted">Ответы</a></li>
-                    <li class="nav-item mb-2"><a href="#" class="nav-link p-0 text-muted">О нас</a></li>
-                </ul>
-            </div>
-
-            <div class="col-4 offset-1">
-                <form>
-                    <h5>Подписывайтесь на нашу новостную рассылку</h5>
-                    <p>Ежемесячный дайджест всего нового и интересного от нас.</p>
-                    <div class="d-flex w-100 gap-2">
-                        <label for="newsletter1" class="visually-hidden">Адрес электронной почты</label>
-                        <input id="newsletter1" type="text" class="form-control" placeholder="Адрес электронной почты">
-                        <button class="btn btn-primary" type="button">Подписаться</button>
-                    </div>
-                </form>
-            </div>
-        </div>
-
-        <div class="d-flex justify-content-between pt-3 mt-3 border-top">
+        <div class="d-flex justify-content-between pt-3 border-top">
             <p>© 2021 ARMATURA.MOSCOW. Все права защищены.</p>
             <ul class="list-unstyled d-flex">
                 <li class="ms-3"><a class="link-dark" href="#">
-                    <svg class="bi" width="24" height="24">
-                        <use xlink:href="#twitter"></use>
-                    </svg>
+                    <i class="bi bi-twitter"></i>
                 </a></li>
                 <li class="ms-3"><a class="link-dark" href="#">
-                    <svg class="bi" width="24" height="24">
-                        <use xlink:href="#instagram"></use>
-                    </svg>
+                    <i class="bi bi-instagram"></i>
                 </a></li>
                 <li class="ms-3"><a class="link-dark" href="#">
-                    <svg class="bi" width="24" height="24">
-                        <use xlink:href="#facebook"></use>
-                    </svg>
+                    <i class="bi bi-facebook"></i>
                 </a></li>
             </ul>
         </div>

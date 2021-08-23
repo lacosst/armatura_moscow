@@ -22,10 +22,11 @@ class Category(models.Model):
 
 
 class Product(models.Model):
+    order = models.IntegerField(default=0)
     category = models.ForeignKey(Category, related_name='products', on_delete=models.PROTECT, verbose_name='Категория')
     name = models.CharField(max_length=200, db_index=True, verbose_name='Наименование')
     slug = models.SlugField(max_length=200, db_index=True, verbose_name='URL')
-    image = models.ImageField(upload_to='products/%Y/%m/%d', blank=True, verbose_name='Изображение')
+    image = models.ImageField(upload_to='products', blank=True, verbose_name='Изображение')
     diametr = models.CharField(verbose_name='Диаметр', max_length=5)
     mark_steel = models.CharField(max_length=10, verbose_name='Марка стали')
     dlina = models.CharField(max_length=10, verbose_name='Длина', blank=True)
@@ -41,7 +42,7 @@ class Product(models.Model):
     class Meta:
         verbose_name = 'Товар'
         verbose_name_plural = 'Товары'
-        ordering = ['id']
+        ordering = ['category', 'order']
         # index_together = (('id', 'slug'),)
 
     def __str__(self):

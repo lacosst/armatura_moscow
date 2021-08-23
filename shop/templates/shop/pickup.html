@@ -1,0 +1,26 @@
+{% extends 'shop/base.html' %}
+{% block title %}
+    Самовывоз | ARMATURA.MOSCOW арматура в Одинцово
+{% endblock %}
+{% block content %}
+    <h1>Самовывоз</h1>
+        <div class="card shadow border-0">
+        <div class="card-header fs-6" style="font-size: 10px;">
+            <nav style="--bs-breadcrumb-divider: url(&#34;data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='8' height='8'%3E%3Cpath d='M2.5 0L1 1.5 3.5 4 1 6.5 2.5 8l4-4-4-4z' fill='currentColor'/%3E%3C/svg%3E&#34;);"
+                 aria-label="breadcrumb">
+                <ol class="breadcrumb m-0">
+                    <li class="breadcrumb-item"><a class="text-decoration-none" href="{% url 'shop:home' %}">Главная</a>
+                    </li>
+                    <li class="breadcrumb-item active" aria-current="page">Самовывоз</li>
+                </ol>
+            </nav>
+        </div>
+        <div class="row card-body px-5 py-3">
+            <div class="alert alert-danger my-1 whn" style="width: fit-content; line-height: 2.3rem;"><i class="bi bi-exclamation-triangle h3"></i> Посещение склада возможно после согласования заказа и потдверждения наличия товара менеджером</div>
+            <ul class="my-3 px-4">
+                <li>Склад самовывоза находится по аресу: <a class="text-decoration-none" target="_blank" href="https://yandex.ru/maps/-/CCUi7Lsn0D"><i class="bi bi-geo-alt"></i> Транспортный проезд 9с8, Одинцово</a></li>
+                <li>Отгрузка продукции производится в <a class="text-decoration-none" href="{% url 'shop:contact' %}">рабочие время</a> склда</li>
+            </ul>
+        </div>
+    </div>
+{% endblock %}

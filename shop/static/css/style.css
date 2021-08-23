@@ -33,6 +33,9 @@ table {
     white-space: nowrap;
 }
 
+.card p, .card li, .whn {
+	white-space: normal;
+}
 .cart {
     padding-top: 0;
     padding-left: 12px;
@@ -57,9 +60,6 @@ table {
 	border-radius: 0 0 7px 7px;
 }
 
-footer {
-
-}
 .main_footer {
 	background: #f5f5f5;
 	border-radius: 7px 7px 0 0;
@@ -76,7 +76,7 @@ footer {
 	padding-top: 3rem;
 }
 
-.alert-success {
+.buy-message {
 	position: fixed !important;
 	top: 90px;
 	right: 2%;
@@ -88,7 +88,12 @@ footer {
 }
 
 .card-body .border-bottom:hover  {
-		background-color: rgba(0,0,0,.075);
+	background-color: #fff;
+	border-radius: 10px;
+	box-shadow: 0 0.5rem 1rem rgb(0 0 0 / 15%) !important;
+}
+.table-hover tbody tr:hover {
+	background-color: rgba(168,175,189,.25);
 }
 
 .in::-webkit-outer-spin-button,
@@ -102,9 +107,20 @@ footer {
   -moz-appearance:textfield;
 }
 
+.header-items {
+	display: none;
+}
+
+#subheader {
+	position: fixed;
+	top: 1rem;
+	left: 65%;
+	z-index: 1100;
+}
+
 /*----Mobile 768px ----*/
 @media (max-width:1200px){
-	content_site{
+	.content_site{
 		max-width: 970px;
 	}
 	product-details {
@@ -113,18 +129,85 @@ footer {
 }
 
 @media (max-width:992px){
-	content_site{
+	.content_site{
 		max-width: 750px;
 	}
 	product-details {
 		padding: 0px 5%;
 	}
+	.navbar-toggler {
+		position: relative;
+    	right: 35%;
+	}
+	.navbar-brand{
+		font-weight: 700;
+	}
+	.navbar-collapse {
+        background-color: #f5f5f5;
+        position: fixed;
+        top: 75px;
+        left: 2%;
+        width: 210px;
+        padding-left: 1%;
+        border-radius: 5px;
+        font-size: 1.5rem;
+		font-weight: 700;
+    }
 }
+@media (max-width:845px){
+	.text-white {
+		font-size: small;
+	}
+}
+
 @media (max-width:768px){
-	content_site{
+	/* .content_site{
 		max-width: none;
+		min-width: 400px;
+	} */
+	.row * {
+		flex-shrink: 1;
 	}
 	product-details {
 		padding: 0px 5%;
+	}
+	.header-items {
+		display: block;
+		float: left;
+	}
+	.items {
+		float: right;
+	}
+	.name-items {
+		margin-left: 35%;
+		margin-right: auto;
+	}
+	.card-header{
+		display: none;
+	}
+	.navbar-toggler {
+		position: relative;
+    	right: 35%;
+	}
+	/* #subheader {
+		font-size: smaller;
+	} */
+	.text-white {
+		font-size: small;
+	}
+	.navbar-brand {
+		font-size: medium;
+	}
+	.total {
+		margin-left: 25%;
+	}
+}
+@media (max-width:740px){
+	#subheader .cart {
+		line-height: 20px;
+	}
+	.add_to_cart {
+		width: 70%;
+		margin-left: auto;
 	}
 }

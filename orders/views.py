@@ -1,6 +1,5 @@
 from django.shortcuts import render
 from django.template.loader import get_template, render_to_string
-
 from .models import OrderItem, Order
 from .forms import OrderCreateForm
 from cart.cart import Cart
@@ -36,9 +35,7 @@ def order_create(request):
                 context = {'order': order, 'cart': cart}
                 cart.clear()  # очистка корзины
                 um = form.cleaned_data["email"]
-
                 sendmail_for_user(um, context)  # отправка письма пользователю
-
                 return render(request, 'orders/created.html',
                               {'order': order, 'categories': categories})
             else:

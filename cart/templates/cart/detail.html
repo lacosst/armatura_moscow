@@ -5,25 +5,25 @@
     Корзина | ARMATURA.MOSCOW арматура в Одинцово
 {% endblock %}
 {% block content %}
-
-    <div class="col-lg-9 mx-auto">
         {% if cart %}
             <h1 class="mb-4">Ваша корзина</h1>
             <div class="cart card card-body shadow border-0">
                 <div class="row card-header fs-6 fw-bold py-3">
-                    <div class="col-3">Наименование</div>
-                    <div class="col text-center">Количество, м.</div>
-                    <div class="col text-center">Цена за метр, руб.</div>
-                    <div class="col text-center">Сумма, руб.</div>
-                    <div class="col text-center">Удалить</div>
+                    <div class="col-md-3 col-sm-12">Наименование</div>
+                    <div class="col-md-3 col-sm-6 text-center">Количество, м.</div>
+                    <div class="col-md-2 col-sm-12 text-center">Цена за метр, руб.</div>
+                    <div class="col-md-2 col-sm-12 text-center">Сумма, руб.</div>
+                    <div class="col-md-2 col-sm-12 text-center">Удалить</div>
                 </div>
                 {% for item in cart %}
                     {% with product=item.product %}
                         <div class="row card-body border-bottom">
-                            <div class="col-3 fw-bolder align-self-center"><a class="text-decoration-none"
-                                                            href="{% url 'shop:product' product.slug %}">{{ product.name }}</a>
+                            <div class="col-md-3 col-sm-12 fw-bolder align-self-center">
+                                <div class="name-items">
+                                    <a class="text-decoration-none" href="{% url 'shop:product' product.slug %}">{{ product.name }}</a>
+                                </div>
                             </div>
-                            <div class="col text-center align-self-center">
+                            <div class="col-md-3 col-sm-6 mx-auto text-center align-self-center">
                                 <form class="cart_update" method="post"
                                       action="{% url 'cart:cart_update' product.id %}">
                                     {% csrf_token %}
@@ -37,17 +37,23 @@
                                     </div>
                                 </form>
                             </div>
-                            <div class="col text-center cost_price align-self-center">{{ item.price }}</div>
-                            <div class="col text-center cost_total align-self-center">{{ item.total_price|intcomma }}</div>
-                            <div class="col text-center fs-3 align-self-center"><a href="{% url "cart:cart_remove" product.id %}"><i
+                            <div class="col-md-2 col-sm-12 text-center cost_price align-self-center">
+                                <div class="header-items">Цена за метр, руб.</div>
+                                <div class="items">{{ item.price }}</div>
+                            </div>
+                            <div class="col-md-2 col-sm-12 text-center cost_total align-self-center">
+                                <div class="header-items">Сумма, руб.</div>
+                                <div class="items">{{ item.total_price|intcomma }}</div>
+                            </div>
+                            <div class="col-md-2 col-sm-12 text-center fs-3 align-self-center"><a href="{% url "cart:cart_remove" product.id %}"><i
                                     class="bi bi-cart-x"></i></a>
                             </div>
                         </div>
                     {% endwith %}
                 {% endfor %}
                 <div class="row card-footer">
-                    <div class="col-5 text-end">Итого:</div>
-                    <div class="col-5">{{ cart.get_total_price|intcomma }} руб.</div>
+                    <div class="col-8"></div>
+                    <div class="col-4 total"><b>Итого: {{ cart.get_total_price|intcomma }} руб.</b></div>
                 </div>
 
             </div>
@@ -68,7 +74,6 @@
                 </p>
             </div>
         {% endif %}
-    </div>
 {% endblock %}
 {% block javascript %}
     <script>
@@ -83,7 +88,7 @@
                     // если успешно, то
                     success: function (response) {
                         //alert("Спасибо, что обратились к нам ");                
-                        workMessenger(response.count_item_cart, response.msg, response.total_pice_cart, response.quantity)
+                        // workMessenger(response.count_item_cart, response.msg, response.total_pice_cart, response.quantity)
                         console.log(response)
                         console.log(this.data + '-----------------------------------------' + this.url)
                         console.log('quantity: ' + response.quantity)
@@ -94,7 +99,7 @@
                     // если ошибка, то
                     error: function (response) {
                         // предупредим об ошибке
-                        alert(response.responseJSON);
+                        // alert(response.responseJSON);
                         console.log(response.responseJSON)
                     }
                 });
@@ -110,8 +115,9 @@
                     success: function (response) {
                         //alert("Спасибо, что обратились к нам ");                
                         // workMessenger(response.count_item_cart, response.msg, response.total_pice_cart, response.quantity)
+                        //Total change
                         let footerCost = document.querySelector('.card-footer').childNodes[3]
-                        footerCost.innerText = String(response.total_pice_cart).split('.').join(',') + ' руб.'
+                        footerCost.innerHTML ='<b>Итого: ' + numberWithSpaces(String(response.total_pice_cart).split('.').join(',')) + ' руб.</b>'
                         // console.log(footerCost)
                         console.log(response)
                         console.log(this.data + '-----------------------------------------' + this.url)
@@ -123,7 +129,7 @@
                     // если ошибка, то
                     error: function (response) {
                         // предупредим об ошибке
-                        alert(response.responseJSON);
+                        // alert(response.responseJSON);
                         console.log(response.responseJSON)
                     }
                 });
